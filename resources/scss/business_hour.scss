@@ -1,0 +1,108 @@
+@use "common" as *;
+
+.local-container {
+    flex-basis: 80%;
+    background: rgba(224, 221, 221, 0.717);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    @extend .content-width;
+
+    &__title {
+        font-size: 1.1em;
+        font-weight: 500;
+    }
+
+    &__hospital {
+        appearance: menulist;
+        background: rgba(224, 221, 221, 0.904);
+        padding: 2px 10px;
+        flex-basis: 18%;
+        text-align: center;
+    }
+}
+
+.time {
+    @extend .content-width;
+    background: white;
+    padding: 8px 10px 6px 10px;
+
+    &__item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        &:last-child::after {
+            display: none;
+        }
+
+        &::after {
+            margin-top: 10px;
+            content: "";
+            height: 1px;
+            width: 100%;
+            background: rgba(224, 221, 221, 0.717);
+        }
+
+        &-hour {
+            appearance: menulist;
+            padding: 2px 6px 2px 2px;
+            border: solid 1px black;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        &-minute {
+            appearance: menulist;
+            padding: 2px 6px 2px 2px;
+            border: solid 1px black;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        &-business_hours {
+            display: flex;
+            flex-direction: column;
+            flex-basis: 50%;
+        }
+
+        &-business_hour {
+            display: inline-flex;
+            align-items: flex-start;
+            justify-content: space-around;
+            margin-bottom: 10px;
+
+            &:first-child > .time__delete {
+                visibility: hidden;
+            }
+        }
+    }
+
+    &__holiday {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        flex-basis: 50%;
+    }
+
+    &__btn {
+        display: flex;
+        flex-basis: 30%;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+
+    &__delete {
+        margin-top: 2px;
+        cursor: pointer;
+    }
+
+    &__submit {
+        @extend .content-width;
+        text-align: end;
+        margin-top: 10px;
+    }
+}

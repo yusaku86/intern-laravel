@@ -1,0 +1,45 @@
+@use "common" as *;
+
+.local-container {
+    flex-basis: 80%;
+    background: rgb(241, 241, 241);
+}
+
+.header {
+    @extend .content-width;
+
+    &__title {
+        font-size: 1.3em;
+    }
+}
+
+.account {
+    @extend .content-width;
+    background: white;
+    padding: 10px 0 20px 0;
+
+    &__item {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 10px;
+
+        &-header {
+            display: flex;
+            flex-basis: 20%;
+            justify-content: flex-end;
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        &-content {
+            flex-basis: 60%;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+        }
+
+        & > input {
+            border: 1px solid black;
+        }
+    }
+}

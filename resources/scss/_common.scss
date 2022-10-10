@@ -1,0 +1,86 @@
+// コンテントの幅
+.content-width {
+    width: 90%;
+    margin: 0 auto;
+}
+// エラーメッセージ
+.error-message {
+    color: red;
+    padding: 4px 8px;
+}
+
+.success-message {
+    color: green;
+    padding: 4px 8px;
+}
+
+.font-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.none {
+    display: none !important;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.mt-md {
+    margin-top: 16px;
+}
+
+.mt-lg {
+    margin-top: 32px;
+}
+
+.mb-md {
+    margin-bottom: 16px;
+}
+
+.mr-md {
+    margin-right: 16px;
+}
+
+.btn {
+    padding: 4px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    &:hover {
+        transform: scale(1.05, 1.05);
+    }
+
+    &-blue {
+        background: rgba(3, 0, 80, 0.806);
+        color: white;
+    }
+
+    &-skyblue {
+        background: rgba(216, 226, 247, 0.717);
+        color: rgb(24, 142, 253);
+        border: solid 1px rgb(24, 142, 253);
+    }
+
+    &-gray {
+        background: rgba(224, 221, 221, 0.717);
+        border: solid 1px rgba(118, 117, 117, 0.929);
+    }
+
+    &-red {
+        background: rgb(252, 229, 229);
+        color: red;
+        border: solid 1px rgb(253, 24, 62);
+    }
+}
+
+.radius {
+    border-radius: 10px;
+    padding: 2px 0;
+}
+
+.text-center {
+    text-align: center;
+}

@@ -1,0 +1,66 @@
+@use "common" as *;
+
+.local-container {
+    flex-basis: 80%;
+    background: rgb(241, 241, 241);
+}
+
+.header {
+    @extend .content-width;
+}
+
+.account {
+    @extend .content-width;
+
+    &__header {
+        padding: 5px 10px;
+        background: rgb(165, 165, 165);
+        color: white;
+    }
+
+    &__list {
+        background: white;
+
+        &-item {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+        }
+
+        &-email {
+            text-align: left;
+            flex-basis: 50%;
+        }
+
+        &-line {
+            height: 1px;
+            width: 100%;
+            background: rgb(190, 188, 188);
+
+            &:last-child {
+                display: none;
+            }
+        }
+
+        &-btn {
+            flex-basis: 20%;
+            display: flex;
+            justify-content: space-around;
+
+            & > .btn-password {
+                flex-basis: 65%;
+                text-align: center;
+            }
+
+            & > .btn-delete {
+                flex-basis: 30%;
+                text-align: center;
+            }
+        }
+    }
+    &__btn {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 20px;
+    }
+}
