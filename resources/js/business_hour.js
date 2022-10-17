@@ -171,6 +171,13 @@ class BusinessHoursController {
         const targetHoliday = document.querySelector(`#holiday-${dayOfWeek}`);
         targetHoliday.classList.toggle('none');
 
+        // 定休日ボタンの表示文字変更
+        if (targetHoliday.classList.contains('none')) {
+            document.querySelector(`#btn_holiday${dayOfWeek}`).innerHTML = '定休日に設定';
+        } else {
+            document.querySelector(`#btn_holiday${dayOfWeek}`).innerHTML = '定休日を解除';
+        }
+
         // 「時間を追加」ボタン
         const addBtn = document.querySelector(`#btn_add${dayOfWeek}`);
         addBtn.classList.toggle('hidden');

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\BusinessHour;
+namespace App\Services;
 
 use Illuminate\Http\Request;
 use App\Models\Business_hour;
 use App\Models\Hospital;
 
-class TimeService
+class BusinessHourService
 {
     // 診療時間の追加
     public function addBusinessHour(Request $request, $daysOfWeek, $htmlId)

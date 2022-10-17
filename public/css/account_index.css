@@ -1,1 +1,129 @@
-.account,.content-width,.header{margin:0 auto;width:90%}.error-message{color:red;padding:4px 8px}.success-message{color:green;padding:4px 8px}.font-title{font-size:16px;font-weight:700}.none{display:none!important}.hidden{visibility:hidden}.mt-md{margin-top:16px}.mt-lg{margin-top:32px}.mb-md{margin-bottom:16px}.mr-md{margin-right:16px}.btn{border-radius:3px;cursor:pointer;padding:4px 16px;transition:transform .3s}.btn:hover{transform:scale(1.05)}.btn-blue{background:rgba(3,0,80,.806);color:#fff}.btn-skyblue{background:rgba(216,226,247,.717);border:1px solid #188efd;color:#188efd}.btn-gray{background:hsla(0,5%,87%,.717);border:1px solid hsla(0,0%,46%,.929)}.btn-red{background:#fce5e5;border:1px solid #fd183e;color:red}.radius{border-radius:10px;padding:2px 0}.text-center{text-align:center}.local-container{background:#f1f1f1;flex-basis:80%}.account__header{background:#a5a5a5;color:#fff;padding:5px 10px}.account__list{background:#fff}.account__list-item{display:flex;justify-content:space-around;padding:15px 0}.account__list-email{flex-basis:50%;text-align:left}.account__list-line{background:#bebcbc;height:1px;width:100%}.account__list-line:last-child{display:none}.account__list-btn{display:flex;flex-basis:20%;justify-content:space-around}.account__list-btn>.btn-password{flex-basis:65%;text-align:center}.account__list-btn>.btn-delete{flex-basis:30%;text-align:center}.account__btn{display:flex;justify-content:center;padding-bottom:20px}
+.content-width, .header, .account {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.error-message {
+  color: red;
+  padding: 4px 8px;
+}
+
+.success-message {
+  color: green;
+  padding: 4px 8px;
+}
+
+.font-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.none {
+  display: none !important;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.mt-md {
+  margin-top: 16px;
+}
+
+.mt-lg {
+  margin-top: 32px;
+}
+
+.mb-md {
+  margin-bottom: 16px;
+}
+
+.mr-md {
+  margin-right: 16px;
+}
+
+.btn {
+  padding: 4px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.btn:hover {
+  transform: scale(1.05, 1.05);
+}
+.btn-blue {
+  background: rgba(3, 0, 80, 0.806);
+  color: white;
+}
+.btn-skyblue {
+  background: rgba(216, 226, 247, 0.717);
+  color: rgb(24, 142, 253);
+  border: solid 1px rgb(24, 142, 253);
+}
+.btn-gray {
+  background: rgba(224, 221, 221, 0.717);
+  border: solid 1px rgba(118, 117, 117, 0.929);
+}
+.btn-red {
+  background: rgb(252, 229, 229);
+  color: red;
+  border: solid 1px rgb(253, 24, 62);
+}
+
+.radius {
+  border-radius: 10px;
+  padding: 2px 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.local-container {
+  flex-basis: 80%;
+  background: rgb(241, 241, 241);
+}
+
+.account__header {
+  padding: 5px 10px;
+  background: rgb(165, 165, 165);
+  color: white;
+}
+.account__list {
+  background: white;
+}
+.account__list-item {
+  display: flex;
+  justify-content: space-around;
+  padding: 15px 0;
+}
+.account__list-email {
+  text-align: left;
+  flex-basis: 50%;
+}
+.account__list-line {
+  height: 1px;
+  width: 100%;
+  background: rgb(190, 188, 188);
+}
+.account__list-line:last-child {
+  display: none;
+}
+.account__list-btn {
+  flex-basis: 20%;
+  display: flex;
+  justify-content: space-around;
+}
+.account__list-btn > .btn-password {
+  flex-basis: 65%;
+  text-align: center;
+}
+.account__list-btn > .btn-delete {
+  flex-basis: 30%;
+  text-align: center;
+}
+.account__btn {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}

@@ -1,15 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Hospital;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\CreateRequest;
 use App\Models\Hospital;
 use App\Models\Business_hour;
 
-class CreateController extends Controller
+class HospitalController extends Controller
 {
-    public function __invoke(CreateRequest $request)
+    public function index()
+    {
+        return view('hospital');
+    }
+
+    public function create(CreateRequest $request)
     {
         $id = Hospital::create([
             'name' => $request->input('hospital_name'),

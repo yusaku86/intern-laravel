@@ -57,7 +57,7 @@
                                     {{-- 診療開始時間 --}}
                                     <div class="time__item-start">
                                         <select class="time__item-hour" name="start_hour{{ $dayNum }}-{{ $counter }}">
-                                            @for ($i = 1; $i <= 24; $i++)
+                                            @for ($i = 1; $i <= 23; $i++)
                                                 @if (intval(substr($businessHour->start_time, 0, 2)) === $i)
                                                     <option value="{{ $i }}" selected>{{ $i }}</option>
                                                 @else
@@ -83,7 +83,7 @@
                                     {{-- 診療終了時間 --}}
                                     <div class="time__item-end">
                                         <select class="time__item-hour" name="end_hour{{ $dayNum }}-{{ $counter }}">
-                                            @for ($k = 1; $k <= 24; $k++)
+                                            @for ($k = 1; $k <= 23; $k++)
                                                 @if (intval(substr($businessHour->end_time, 0, 2)) === $k)
                                                     <option value="{{ $k }}" selected>{{ $k }}</option>
                                                 @else

@@ -25,16 +25,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [\App\Http\Controllers\AdminUser\LoginController::class, 'logout'])->name('logout');
 
     // ホーム画面
-    Route::get('/', \App\Http\Controllers\Home\IndexController::class)->name('home');
+    Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // 診療時間関連
     Route::prefix('business_hour')->group(function () {
         // 診療時間画面表示
-        Route::get('/', \App\Http\Controllers\BusinessHour\IndexController::class)->name('business_hour');
-        Route::get('/{id}', \App\Http\Controllers\BusinessHour\IndexController::class)->name('business_hour.id');
+        Route::get('/', [\App\Http\Controllers\BusinessHourController::class, 'index'])->name('business_hour');
+        Route::get('/{id}', [\App\Http\Controllers\BusinessHourController::class, 'index'])->name('business_hour.id');
 
         // 診療時間設定
-        Route::post('/', [\App\Http\Controllers\BusinessHour\TimeController::class, 'executeQuery'])->name('business_hour.execute');
+        Route::post('/', [\App\Http\Controllers\BusinessHourController::class, 'executeQuery'])->name('business_hour.execute');
     });
 
     // 長期休暇関連
@@ -74,9 +74,9 @@ Route::middleware('auth')->group(function () {
     // 病院登録関連
     Route::prefix('hospital')->group(function () {
         // 病院登録画面表示
-        Route::get('/', \App\Http\Controllers\Hospital\IndexAddController::class)->name('hospital');
+        Route::get('/', [\App\Http\Controllers\HospitalController::class, 'index'])->name('hospital');
 
         // 病院登録実行
-        Route::post('/', \App\Http\Controllers\Hospital\CreateController::class)->name('hospital.create');
+        Route::post('/', [\App\Http\Controllers\HospitalController::class, 'create'])->name('hospital.create');
     });
 });

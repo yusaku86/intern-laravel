@@ -1,14 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\BusinessHour;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\BusinessHour\TimeService;
+use App\Services\BusinessHourService;
+use App\Models\Hospital;
 
-class TimeController extends Controller
+class BusinessHourController extends Controller
 {
-    public function executeQuery(Request $request, TimeService $service)
+    public function index($selectedId = null)
+    {
+        $hospitals = Hospital::orderBy('id', 'asc')->get();
+
+        $selectedId = $selectedId ?? $hospitals[0]->id;
+        $businessHours = Hospital::find($selectedId)->businessHours->sortBy('days_of_week');
+
+        return view('business_hour')->with([
+            'hospitals' => $hospitals,
+            'businessHours' => $businessHours,
+            'selectedId' => intval($selectedId),
+        ]);
+    }
+
+    public function executeQuery(Request $request, BusinessHourService $service)
     {
 
         // 削除された診療時間

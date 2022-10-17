@@ -1,1 +1,116 @@
-.content-width,.hospital,.page-title{margin:0 auto;width:90%}.error-message{color:red;padding:4px 8px}.success-message{color:green;padding:4px 8px}.font-title{font-size:16px;font-weight:700}.none{display:none!important}.hidden{visibility:hidden}.mt-md{margin-top:16px}.mt-lg{margin-top:32px}.mb-md{margin-bottom:16px}.mr-md{margin-right:16px}.btn{border-radius:3px;cursor:pointer;padding:4px 16px;transition:transform .3s}.btn:hover{transform:scale(1.05)}.btn-blue{background:rgba(3,0,80,.806);color:#fff}.btn-skyblue{background:rgba(216,226,247,.717);border:1px solid #188efd;color:#188efd}.btn-gray{background:hsla(0,5%,87%,.717);border:1px solid hsla(0,0%,46%,.929)}.btn-red{background:#fce5e5;border:1px solid #fd183e;color:red}.radius{border-radius:10px;padding:2px 0}.text-center{text-align:center}.local-container{background:#f1f1f1;width:100%}.page-title{text-align:left}.hospital{background:#fff}.hospital__form{display:flex;flex-direction:column}.hospital__form-item{display:flex;margin-top:25px}.hospital__form-label{align-items:center;display:inline-flex;flex-basis:30%;justify-content:flex-end;margin-left:10px}.hospital__form-input{border:1px solid #000;border-radius:3px;flex-basis:50%;justify-content:flex-end;margin-left:15px;padding:4px 6px}
+.content-width, .page-title, .hospital {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.error-message {
+  color: red;
+  padding: 4px 8px;
+}
+
+.success-message {
+  color: green;
+  padding: 4px 8px;
+}
+
+.font-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.none {
+  display: none !important;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.mt-md {
+  margin-top: 16px;
+}
+
+.mt-lg {
+  margin-top: 32px;
+}
+
+.mb-md {
+  margin-bottom: 16px;
+}
+
+.mr-md {
+  margin-right: 16px;
+}
+
+.btn {
+  padding: 4px 16px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.btn:hover {
+  transform: scale(1.05, 1.05);
+}
+.btn-blue {
+  background: rgba(3, 0, 80, 0.806);
+  color: white;
+}
+.btn-skyblue {
+  background: rgba(216, 226, 247, 0.717);
+  color: rgb(24, 142, 253);
+  border: solid 1px rgb(24, 142, 253);
+}
+.btn-gray {
+  background: rgba(224, 221, 221, 0.717);
+  border: solid 1px rgba(118, 117, 117, 0.929);
+}
+.btn-red {
+  background: rgb(252, 229, 229);
+  color: red;
+  border: solid 1px rgb(253, 24, 62);
+}
+
+.radius {
+  border-radius: 10px;
+  padding: 2px 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.local-container {
+  background: rgb(241, 241, 241);
+  width: 100%;
+}
+
+.page-title {
+  text-align: left;
+}
+
+.hospital {
+  background: white;
+}
+.hospital__form {
+  display: flex;
+  flex-direction: column;
+}
+.hospital__form-item {
+  display: flex;
+  margin-top: 25px;
+}
+.hospital__form-label {
+  display: inline-flex;
+  margin-left: 10px;
+  flex-basis: 30%;
+  justify-content: flex-end;
+  align-items: center;
+}
+.hospital__form-input {
+  justify-content: flex-end;
+  margin-left: 15px;
+  flex-basis: 50%;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 4px 6px;
+}
