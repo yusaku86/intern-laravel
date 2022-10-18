@@ -130,6 +130,9 @@
 .vacation__add-period > input::-moz-placeholder {
   color: rgb(140, 139, 139);
 }
+.vacation__add-period > input:-ms-input-placeholder {
+  color: rgb(140, 139, 139);
+}
 .vacation__add-period > input::placeholder {
   color: rgb(140, 139, 139);
 }
@@ -170,4 +173,4 @@
 }
 .vacation__list__item-line:last-child {
   display: none;
-}
+}/*# sourceMappingURL=vacation.css.map */

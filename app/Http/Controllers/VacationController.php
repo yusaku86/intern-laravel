@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Hospital;
 use App\Models\Vacation;
-use Illuminate\Http\Request;
+
+use App\Http\Requests\VacationRequest;
 
 class VacationController extends Controller
 {
@@ -29,7 +30,8 @@ class VacationController extends Controller
     }
 
     // 長期休暇を追加
-    public function create(Request $request)
+
+    public function create(VacationRequest $request)
     {
         Vacation::create([
             'hospital_id' => $request->input('hospital'),

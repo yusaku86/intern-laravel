@@ -53,6 +53,12 @@
         transform: scale(1.05, 1.05);
     }
 
+    &:disabled {
+        opacity: 0.5;
+        cursor: default;
+        transition: none;
+        transform: scale(1, 1);
+    }
     &-blue {
         background: rgba(3, 0, 80, 0.806);
         color: white;

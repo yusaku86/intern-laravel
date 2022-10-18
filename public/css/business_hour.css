@@ -51,6 +51,12 @@
 .btn:hover {
   transform: scale(1.05, 1.05);
 }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  transition: none;
+  transform: scale(1, 1);
+}
 .btn-blue {
   background: rgba(3, 0, 80, 0.806);
   color: white;
@@ -115,12 +121,15 @@
 .time__item:last-child::after {
   display: none;
 }
-.time__item::after {
+.time__item-line {
   margin-top: 10px;
-  content: "";
+  margin-bottom: 10px;
   height: 1px;
   width: 100%;
   background: rgba(224, 221, 221, 0.717);
+}
+.time__item-line:last-child {
+  display: none;
 }
 .time__item-hour {
   -webkit-appearance: menulist;

@@ -1,4 +1,4 @@
-.content-width, .header, .account {
+.content-width {
   width: 90%;
   margin: 0 auto;
 }
@@ -85,37 +85,31 @@
   text-align: center;
 }
 
-.local-container {
-  flex-basis: 80%;
-  background: rgb(241, 241, 241);
+.container {
+  display: flex;
 }
 
-.header__title {
-  font-size: 1.3em;
-}
-
-.account {
-  background: white;
-  padding: 10px 0 20px 0;
-}
-.account__item {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
-}
-.account__item-header {
-  display: flex;
+.side-menu {
   flex-basis: 20%;
-  justify-content: flex-end;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  width: 100%;
+  height: 100vh;
+  background: rgba(43, 146, 255, 0.966);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
-.account__item-content {
-  flex-basis: 60%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
+.side-menu__item {
+  margin: 15px 0;
 }
-.account__item > input {
-  border: 1px solid black;
+.side-menu__btn {
+  display: inline-block;
+  width: 70%;
+  background: rgba(255, 255, 255, 0.952);
+  padding: 6px 0;
+  border-radius: 3px;
 }
+.side-menu__link {
+  text-decoration: none;
+  color: rgba(47, 43, 255, 0.966);
+  font-weight: bold;
+}/*# sourceMappingURL=main.css.map */

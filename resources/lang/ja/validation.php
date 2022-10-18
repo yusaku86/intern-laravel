@@ -87,7 +87,7 @@ return [
     'unique'               => 'その:attributeはすでに使われています。',
     'uploaded'             => ':attributeのアップロードに失敗しました。',
     'url'                  => ':attributeには正しい形式のURLを指定してください。',
-
+    'password'             => 'パスワードは大小アルファベット・記号を含めてください',
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -120,7 +120,9 @@ return [
         'email'                 => 'メールアドレス',
         'password'              => 'パスワード',
         'password_confirmation' => 'パスワード',
-        'hospital_name'         => '病院名'
+        'hospital_name'         => '病院名',
+        'add_reason' => '理由',
+        'add_start-date' => '長期休暇開始日',
+        'add_end-date' => '長期休暇終了日'
     ],
-
 ];

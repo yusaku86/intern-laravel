@@ -33,10 +33,10 @@
                     {{-- $holidayKey:その曜日が定休日かを表すカラム名(「is_open_曜日」の形、月曜日なら is_open_mon) --}}
                     <?php $holidayKey = 'is_open_' . $daysOfWeek[$dayNum][0]; ?>
 
-                    <div class="time__item">
+                    <div class="time__item" id="time__item{{ $dayNum }}">
                         <span class="time__item-day">{{ $daysOfWeek[$dayNum][1] }}</span>
                         <span class="time__holiday radius btn-red none" id="holiday-{{ $dayNum }}">定休日</span>
-                        <input type="hidden" name="is_open{{ $dayNum }}" value="{{ $selectedHospital->$holidayKey }}">
+                        <input type="hidden" name="is_open{{ $dayNum }}" value="{{ old('is_open' . $dayNum, $selectedHospital->$holidayKey) }}">
 
                         {{-- 診療時間グループ --}}
                         <div class="time__item-business_hours" id="business_hours{{ $dayNum }}">
@@ -58,22 +58,19 @@
                                     <div class="time__item-start">
                                         <select class="time__item-hour" name="start_hour{{ $dayNum }}-{{ $counter }}">
                                             @for ($i = 1; $i <= 23; $i++)
-                                                @if (intval(substr($businessHour->start_time, 0, 2)) === $i)
-                                                    <option value="{{ $i }}" selected>{{ $i }}</option>
-                                                @else
-                                                    <option value="{{ $i }}">{{ $i }}</option>
-                                                @endif
+                                                {{-- old関数の値と一致すれば選択、デフォルト値はDBの値 --}}
+                                                <option value="{{ $i }}" @if ($i === (int) old('start_hour' . $dayNum . '-' . $counter, substr($businessHour->start_time, 0, 2))) selected @endif>
+                                                    {{ $i }}
+                                                </option>
                                             @endfor
                                         </select>
                                         <span>時</span>
 
                                         <select class="time__item-minute" name="start_minute{{ $dayNum }}-{{ $counter }}">
                                             @for ($j = 0; $j <= 59; $j++)
-                                                @if (intval(substr($businessHour->start_time, 3, 2)) === $j)
-                                                    <option value="{{ $j }}" selected>{{ str_pad($j, 2, 0, STR_PAD_LEFT) }}</option>
-                                                @else
-                                                    <option value="{{ $j }}">{{ str_pad($j, 2, 0, STR_PAD_LEFT) }}</option>
-                                                @endif
+                                                <option value="{{ $j }}" @if ($j === (int) old('start_minute' . $dayNum . '-' . $counter, substr($businessHour->start_time, 3, 2))) selected @endif>
+                                                    {{ str_pad($j, 2, 0, STR_PAD_LEFT) }}
+                                                </option>
                                             @endfor
                                         </select>
                                         <span>分</span>
@@ -84,22 +81,18 @@
                                     <div class="time__item-end">
                                         <select class="time__item-hour" name="end_hour{{ $dayNum }}-{{ $counter }}">
                                             @for ($k = 1; $k <= 23; $k++)
-                                                @if (intval(substr($businessHour->end_time, 0, 2)) === $k)
-                                                    <option value="{{ $k }}" selected>{{ $k }}</option>
-                                                @else
-                                                    <option value="{{ $k }}">{{ $k }}</option>
-                                                @endif
+                                                <option value="{{ $k }}" @if ($k === (int) old('end_hour' . $dayNum . '-' . $counter, substr($businessHour->end_time, 0, 2))) selected @endif>
+                                                    {{ $k }}
+                                                </option>
                                             @endfor
                                         </select>
                                         <span>時</span>
 
                                         <select class="time__item-minute" name="end_minute{{ $dayNum }}-{{ $counter }}">
                                             @for ($l = 0; $l <= 59; $l++)
-                                                @if (intval(substr($businessHour->end_time, 3, 2)) === $l)
-                                                    <option value="{{ $l }}" selected>{{ str_pad($l, 2, 0, STR_PAD_LEFT) }}</option>
-                                                @else
-                                                    <option value="{{ $l }}">{{ str_pad($l, 2, 0, STR_PAD_LEFT) }}</option>
-                                                @endif
+                                                <option value="{{ $l }}" @if ($l === (int) old('end_minute' . $dayNum . '-' . $counter, substr($businessHour->end_time, 3, 2))) selected @endif>
+                                                    {{ str_pad($l, 2, 0, STR_PAD_LEFT) }}
+                                                </option>
                                             @endfor
                                         </select>
                                         <span>分</span>
@@ -111,6 +104,11 @@
                                         <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                                     </svg>
                                 </div>
+
+                                {{-- バリデーションエラーメッセージ(phpによるバリデーション) --}}
+                                @error('business_hour' . $dayNum . '-' . $counter)
+                                    <p class="error-message text-center">{{ $message }}</p>
+                                @enderror
                             @endforeach
                         </div>
                         <div class="time__btn">
@@ -118,6 +116,12 @@
                             <button class="time__btn-holiday btn btn-skyblue" type="button" id="btn_holiday{{ $dayNum }}">定休日に設定</button>
                         </div>
                     </div>
+
+                    {{-- エラーメッセージ(診療時間が上から順になっていない場合) --}}
+                    @error('time_series' . $dayNum)
+                        <p class="error-message text-center">{{ $message }}</p>
+                    @enderror
+                    <div class="time__item-line"></div>
                 @endfor
             </div>
             {{-- 「保存しました」のメッセージ --}}
@@ -127,7 +131,7 @@
                 </div>
             @endif
             <div class="time__submit">
-                <button class="btn btn-blue" type="submit">変更を保存する</button>
+                <button class="btn btn-blue" type="submit" id="btn_submit">変更を保存する</button>
             </div>
         </form>
     </div>
