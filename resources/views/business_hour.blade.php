@@ -120,6 +120,12 @@
                     </div>
                 @endfor
             </div>
+            {{-- 「保存しました」のメッセージ --}}
+            @if (session('feedback_success'))
+                <div class="success-message text-center">
+                    <p>{{ session('feedback_success') }}</p>
+                </div>
+            @endif
             <div class="time__submit">
                 <button class="btn btn-blue" type="submit">変更を保存する</button>
             </div>

@@ -27,14 +27,17 @@ class BusinessHourController extends Controller
     {
 
         // 削除された診療時間
+        $isDeleted = FALSE;
         $deletedHours = explode(',', $request->input('deleted-list'));
         foreach ($deletedHours as $deletedHour) {
             if ($deletedHour !== '') {
                 $service->deletebusinessHour($deletedHour);
+                $isDeleted = TRUE;
             }
         }
 
         // 変更された診療時間
+        $isChanged = FALSE;
         $changedHours = explode(',', $request->input('changed-list'));
         foreach ($changedHours as $changedHour) {
             if ($changedHour !== '') {
@@ -45,23 +48,33 @@ class BusinessHourController extends Controller
                 if (!in_array($busiessHourId, $deletedHours)) {
                     $htmlId = explode('_', $changedHour)[1];
                     $service->updateBusinessHour($request, $busiessHourId, $htmlId);
+                    $isChanged = TRUE;
                 }
             }
         }
+
         // 追加された診療時間
+        $isAdded = FALSE;
         $addeHours = explode(',', $request->input('added-list'));
         foreach ($addeHours as $addedHour) {
             if ($addedHour !== '') {
                 // $addedHour は、「曜日番号-曜日内で何個目か」の形で値が格納される
                 // 例) 日曜日の2つ目 ⇒ 0-2
                 $service->addBusinessHour($request, intval(substr($addedHour, 0, 1)), $addedHour);
+                $isAdded = TRUE;
             }
         }
 
         // 定休日の設定
-        $service->setHoliday($request, intval($request->input('hospital')));
+        $isChangedHoliday = $service->setHoliday($request, intval($request->input('hospital')));
 
         $hospitalId = intval($request->input('hospital'));
-        return redirect()->route('business_hour.id', $hospitalId);
+
+        if ($isDeleted || $isChanged || $isAdded || $isChangedHoliday) {
+            return redirect()->route('business_hour.id', $hospitalId)
+                ->with('feedback_success', '変更を保存しました。');
+        } else {
+            return redirect()->route('business_hour.id', $hospitalId);
+        }
     }
 }

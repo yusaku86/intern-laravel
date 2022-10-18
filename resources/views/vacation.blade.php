@@ -42,7 +42,7 @@
                                 {{ $vacation->reason }}
                             </div>
                             <div class="vacation__list__item-btn">
-                                <a class="btn-delete radius btn-red" href="{{ route('vacation.delete', $vacation->id) }}" id="btn_delete-{{ $vacation->id }}">削除</a>
+                                <a class="btn-delete radius btn-red text-center" href="{{ route('vacation.delete', $vacation->id) }}" id="btn_delete-{{ $vacation->id }}">削除</a>
                             </div>
                         </div>
                         <div class="vacation__list-line"></div>

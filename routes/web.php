@@ -13,16 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // ログイン画面
-Route::get('/login', [\App\Http\Controllers\AdminUser\LoginController::class, 'showLoginPage'])->name('login');
+Route::get('/login', [\App\Http\Controllers\AdminUserController::class, 'indexLoginPage'])->name('login');
 
 // ログイン認証
-Route::post('/login', [\App\Http\Controllers\AdminUser\LoginController::class, 'login'])->name('login.execute');
+Route::post('/login', [\App\Http\Controllers\AdminUserController::class, 'login'])->name('login.execute');
 
 // 以下ログイン済みのユーザーのみアクセス可能
 Route::middleware('auth')->group(function () {
 
     // ログアウト
-    Route::get('/logout', [\App\Http\Controllers\AdminUser\LoginController::class, 'logout'])->name('logout');
+    Route::get('/logout', [\App\Http\Controllers\AdminUserController::class, 'logout'])->name('logout');
 
     // ホーム画面
     Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -40,35 +40,35 @@ Route::middleware('auth')->group(function () {
     // 長期休暇関連
     Route::prefix('vacation')->group(function () {
         // 長期休暇画面表示
-        Route::get('/', \App\Http\Controllers\Vacation\IndexController::class)->name('vacation');
-        Route::get('/{id}', \App\Http\Controllers\Vacation\IndexController::class);
+        Route::get('/', [\App\Http\Controllers\VacationController::class, 'index'])->name('vacation');
+        Route::get('/{id}', [\App\Http\Controllers\VacationController::class, 'index']);
 
         // 長期休暇追加
-        Route::post('/create', \App\Http\Controllers\Vacation\CreateController::class)->name('vacation.execute');
+        Route::post('/create', [\App\Http\Controllers\VacationController::class, 'create'])->name('vacation.execute');
 
         // 長期休暇削除
-        Route::get('/delete/{id}', \App\Http\Controllers\Vacation\DeleteController::class)->name('vacation.delete');
+        Route::get('/delete/{id}', [\App\Http\Controllers\VacationController::class, 'delete'])->name('vacation.delete');
     });
 
     // ユーザー関連
     Route::prefix('account')->group(function () {
         // ユーザー一覧表示
-        Route::get('/', \App\Http\Controllers\AdminUser\IndexController::class)->name('account.index');
+        Route::get('/', [\App\Http\Controllers\AdminUserController::class, 'index'])->name('account.index');
 
         // ユーザー削除
-        Route::get('/delete/{id}', \App\Http\Controllers\AdminUser\DeleteController::class)->name('account.delete');
+        Route::get('/delete/{id}', [\App\Http\Controllers\AdminUserController::class, 'delete'])->name('account.delete');
 
         // ユーザーパスワード変更画面表示
-        Route::get('/pass/{id}', [\App\Http\Controllers\AdminUser\UpdatePassController::class, 'showPage'])->name('account.change_pass');
+        Route::get('/pass/{id}', [\App\Http\Controllers\AdminUserController::class, 'indexChangePass'])->name('account.change_pass');
 
         // ユーザーパスワード変更実行
-        Route::post('/pass/{id}', [\App\Http\Controllers\AdminUser\UpdatePassController::class, 'updatePass'])->name('account.change_pass_execute');
+        Route::post('/pass/{id}', [\App\Http\Controllers\AdminUserController::class, 'updatePass'])->name('account.change_pass_execute');
 
         // ユーザー追加画面表示
-        Route::get('/create', \App\Http\Controllers\AdminUser\IndexAddController::class)->name('account.create');
+        Route::get('/create', [\App\Http\Controllers\AdminUserController::class, 'indexAddPage'])->name('account.create');
 
         // ユーザー追加を実行
-        Route::post('/account/create', \App\Http\Controllers\AdminUser\CreateController::class)->name('account.create-execute');
+        Route::post('/account/create', [\App\Http\Controllers\AdminUserController::class, 'create'])->name('account.create-execute');
     });
 
     // 病院登録関連

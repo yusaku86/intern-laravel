@@ -44,6 +44,7 @@ class BusinessHourService
     // 定休日の設定
     public function setHoliday(Request $request, $hospitalId)
     {
+        $isChanged = FALSE;
         $daysOfWeek = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 
         for ($i = 0; $i <= 6; $i++) {
@@ -51,12 +52,16 @@ class BusinessHourService
                 Hospital::where('id', '=', $hospitalId)->update([
                     'is_open_' . $daysOfWeek[$i] => TRUE,
                 ]);
+                $isChanged = TRUE;
             } elseif ($request->input('is_open' . $i) === 'false') {
                 Hospital::where('id', '=', $hospitalId)->update([
                     'is_open_' . $daysOfWeek[$i] => FALSE,
                 ]);
+                $isChanged = TRUE;
             }
         }
+
+        return $isChanged;
     }
 
     // 診療開始時間(終了時間)の値をhtmlから取得
