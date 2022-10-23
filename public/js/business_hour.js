@@ -36,6 +36,9 @@ var BusinessHoursController = /*#__PURE__*/function () {
     // 病院のSelectタグにイベント設定
     this.hospitalSelect = document.querySelector('select[name="hospital"]');
     this.hospitalSelect.addEventListener('change', this.changeHospital.bind(this));
+
+    // 「変更を保存」ボタンにイベント設定
+    document.querySelector('#btn_submit').addEventListener('click', this.validate.bind(this));
   }
 
   // 画面読み込み時の定休日の設定
@@ -63,8 +66,7 @@ var BusinessHoursController = /*#__PURE__*/function () {
       var targetBusinessHours = document.querySelector("#business_hours".concat(dayOfWeek));
 
       // 追加時のID番号と新しいidやnameで使うもの
-      var newIdNumber = Number(targetBusinessHours.lastElementChild.id.split('-').pop()) + 1;
-      var newId = "".concat(dayOfWeek, "-").concat(newIdNumber);
+      var newId = this.getNewId(targetBusinessHours);
 
       // 診療時間を1組コピー
       var cloneElement = targetBusinessHours.children[0].cloneNode(true);
@@ -93,6 +95,19 @@ var BusinessHoursController = /*#__PURE__*/function () {
       var addedList = document.querySelector('input[name="added-list"]');
       addedList.value += "".concat(newId, ",");
       targetBusinessHours.appendChild(cloneElement);
+    }
+
+    // 新規追加する診療時間を示す番号を取得(「曜日番号」-「曜日の中で何番目か」の形 例:0-1)
+  }, {
+    key: "getNewId",
+    value: function getNewId(targetBusinessHours) {
+      var dayOfWeek = parseInt(targetBusinessHours.id.replace('business_hours', ''));
+      var lastChild = targetBusinessHours.lastElementChild;
+      if (lastChild.classList.contains('error-message')) {
+        return "".concat(dayOfWeek, "-").concat(parseInt(lastChild.previousElementSibling.id.split('-').pop()) + 1);
+      } else {
+        return "".concat(dayOfWeek, "-").concat(parseInt(lastChild.id.split('-').pop()) + 1);
+      }
     }
 
     /**　追加分の時間と分のSelectタグの名前とID変更、デフォルト値設定 */
@@ -148,11 +163,14 @@ var BusinessHoursController = /*#__PURE__*/function () {
 
       // 削除対象が既存のものだったら削除リストに追加、新規追加したものを削除する場合は追加リストから削除
       if (businessHourId.value !== '') {
-        var deletedList = document.querySelector('input[name="deleted-list"]');
-        deletedList.value += "".concat(businessHourId.value, ",");
+        document.querySelector('input[name="deleted-list"]').value += "".concat(businessHourId.value, ",");
       } else {
-        var addedList = document.querySelector('input[name="added-list"]');
-        addedList.value = addedList.value.replace("".concat(targetId, ","), '');
+        document.querySelector('input[name="added-list"]').value = document.querySelector('input[name="added-list"]').value.replace("".concat(targetId, ","), '');
+      }
+
+      // 削除対象にエラーメッセージが表示されていた場合エラーメッセージも削除
+      if (deleteTarget.nextElementSibling !== null && deleteTarget.nextElementSibling.classList.contains('error-message')) {
+        deleteTarget.nextElementSibling.remove();
       }
       deleteTarget.remove();
     }
@@ -230,6 +248,84 @@ var BusinessHoursController = /*#__PURE__*/function () {
     key: "changeHospital",
     value: function changeHospital() {
       window.location.href = "/business_hour/".concat(this.hospitalSelect.value);
+    }
+
+    /**
+     * 診療時間のバリデーション
+     * PHPでバリデーションした場合、新規の診療時間がバリデーションに引っかかるとDBに保存されない⇒
+     * 画面読み込み時にDBからデータを引っ張るためバリデーションに引っかかった新規診療時間が消えてしまうので、jsで先に行う
+     */
+  }, {
+    key: "validate",
+    value: function validate(event) {
+      var _this2 = this;
+      var invalidBusinessHours = this.validateBusinessHours();
+      if (invalidBusinessHours.length > 0) {
+        invalidBusinessHours.forEach(function (invalidBusinessHour) {
+          return _this2.showErrorMessage("business_hour".concat(invalidBusinessHour), 'businessHour');
+        });
+        event.preventDefault();
+      }
+    }
+
+    /**
+     * 診療時間の開始時間と終了時間のバリデーションを全て行い、引っかかったものをinvalidBusinessHoursに格納
+     */
+  }, {
+    key: "validateBusinessHours",
+    value: function validateBusinessHours() {
+      var _this3 = this;
+      var businessHours = document.querySelectorAll('.business_hour_id');
+      var invalidBusinessHours = [];
+      businessHours.forEach(function (businessHour) {
+        if (!_this3.validateBusinessHour(businessHour.name.replace('business_hour_id', ''))) {
+          invalidBusinessHours.push(businessHour.name.replace('business_hour_id', ''));
+        }
+      });
+      return invalidBusinessHours;
+    }
+
+    /**
+     * 診療時間の開始時間と終了時間のバリデーション
+     * @param businessHourId 診療時間を識別するためのid:「曜日番号」-曜日の中で何番目か」の形(例:0-1)
+     */
+  }, {
+    key: "validateBusinessHour",
+    value: function validateBusinessHour(businessHourId) {
+      var startHour = document.querySelector("select[name=\"start_hour".concat(businessHourId, "\"]"));
+      var startMinute = document.querySelector("select[name=\"start_minute".concat(businessHourId, "\"]"));
+      var endHour = document.querySelector("select[name=\"end_hour".concat(businessHourId, "\"]"));
+      var endMinute = document.querySelector("select[name=\"end_minute".concat(businessHourId, "\"]"));
+
+      // 診療時間が新規追加されたもので、時間が選択されていないものは飛ばす
+      // それ以外は終了時間が開始時間より前の場合にfalseを返す
+      if (startHour.value === 'default' || startMinute.value === 'default' || endHour.value === 'default' || endMinute.value === 'default') {
+        return true;
+      } else if (60 * parseInt(startHour.value) + parseInt(startMinute.value) >= 60 * parseInt(endHour.value) + parseInt(endMinute.value)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    // エラーメッセージ表示
+  }, {
+    key: "showErrorMessage",
+    value: function showErrorMessage(businessHourId, option) {
+      var errorElement = document.createElement('p');
+      var targetElement;
+      if (option === 'businessHour') {
+        targetElement = document.querySelector("#".concat(businessHourId));
+
+        // 既にエラーメッセージが表示されている場合は抜ける
+        if (targetElement.nextElementSibling !== null && targetElement.nextElementSibling.classList.contains('error-message')) {
+          return;
+        }
+        errorElement.innerHTML = '終了時間は開始時間より後に設定してください。';
+        errorElement.classList.add('error-message');
+        errorElement.classList.add('text-center');
+      }
+      targetElement.after(errorElement);
     }
 
     // イベントリスナー設定

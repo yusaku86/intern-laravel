@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Models\Business_hour;
 use App\Models\Hospital;
+use Carbon\Carbon;
 
 class BusinessHourService
 {
@@ -64,13 +65,13 @@ class BusinessHourService
         return $isChanged;
     }
 
-    // 診療開始時間(終了時間)の値をhtmlから取得
+    // 診療開始時間(終了時間)の値をhtmlから取得(分は2桁に0埋め)
     private function getTime(Request $request, $timeType, $htmlId)
     {
         // 新規追加したもので値を初期値(-)から変えていない場合は、defalutと返す
         if ($request->input($timeType . '_hour' . $htmlId) === 'default' || $request->input($timeType . '_minute' . $htmlId) === 'default') {
             return 'default';
         }
-        return $request->input($timeType . '_hour' . $htmlId) . ':' . $request->input($timeType . '_minute' . $htmlId);
+        return $request->input($timeType . '_hour' . $htmlId) . ':' . str_pad($request->input($timeType . '_minute' . $htmlId), 2, 0, STR_PAD_LEFT);
     }
 }
