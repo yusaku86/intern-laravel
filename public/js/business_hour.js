@@ -2310,6 +2310,7 @@ var BusinessHoursController = /*#__PURE__*/function () {
     value: function validate(event) {
       var _this2 = this;
       var invalidBusinessHours = this.validateBusinessHours();
+<<<<<<< HEAD
       var isError = false;
       if (invalidBusinessHours.length > 0) {
         invalidBusinessHours.forEach(function (invalidBusinessHour) {
@@ -2325,6 +2326,16 @@ var BusinessHoursController = /*#__PURE__*/function () {
       }
       if (isError === true) event.preventDefault();
     }
+=======
+      if (invalidBusinessHours.length > 0) {
+        invalidBusinessHours.forEach(function (invalidBusinessHour) {
+          return _this2.showErrorMessage("business_hour".concat(invalidBusinessHour), 'businessHour');
+        });
+        event.preventDefault();
+      }
+    }
+
+>>>>>>> refs/remotes/origin/aws
     /**
      * 診療時間の開始時間と終了時間のバリデーションを全て行い、引っかかったものをinvalidBusinessHoursに格納
      */
@@ -2365,6 +2376,7 @@ var BusinessHoursController = /*#__PURE__*/function () {
       }
     }
 
+<<<<<<< HEAD
     /**
      * 曜日内で診療時間が上から時系列に設定されているか確認
      */
@@ -2410,6 +2422,24 @@ var BusinessHoursController = /*#__PURE__*/function () {
         errorElement.innerHTML = '終了時間は開始時間より後に設定してください。';
       } else if (option === 'timeSeries') {
         errorElement.innerHTML = '各曜日の診療時間は上から時系列で設定してください。';
+=======
+    // エラーメッセージ表示
+  }, {
+    key: "showErrorMessage",
+    value: function showErrorMessage(businessHourId, option) {
+      var errorElement = document.createElement('p');
+      var targetElement;
+      if (option === 'businessHour') {
+        targetElement = document.querySelector("#".concat(businessHourId));
+
+        // 既にエラーメッセージが表示されている場合は抜ける
+        if (targetElement.nextElementSibling !== null && targetElement.nextElementSibling.classList.contains('error-message')) {
+          return;
+        }
+        errorElement.innerHTML = '終了時間は開始時間より後に設定してください。';
+        errorElement.classList.add('error-message');
+        errorElement.classList.add('text-center');
+>>>>>>> refs/remotes/origin/aws
       }
       targetElement.after(errorElement);
     }

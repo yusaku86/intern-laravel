@@ -248,6 +248,7 @@ class BusinessHoursController {
 
         if (isError === true) event.preventDefault();
     }
+
     /**
      * 診療時間の開始時間と終了時間のバリデーションを全て行い、引っかかったものをinvalidBusinessHoursに格納
      */
