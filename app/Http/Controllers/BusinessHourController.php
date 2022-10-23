@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\BusinessHourRequest;
 use App\Services\BusinessHourService;
 use App\Models\Hospital;
 
 class BusinessHourController extends Controller
 {
+    // 診療時間一覧表示
     public function index($selectedId = null)
     {
         $hospitals = Hospital::orderBy('id', 'asc')->get();
@@ -23,9 +24,8 @@ class BusinessHourController extends Controller
         ]);
     }
 
-    public function executeQuery(Request $request, BusinessHourService $service)
+    public function executeQuery(BusinessHourRequest $request, BusinessHourService $service)
     {
-
         // 削除された診療時間
         $isDeleted = FALSE;
         $deletedHours = explode(',', $request->input('deleted-list'));
@@ -39,6 +39,7 @@ class BusinessHourController extends Controller
         // 変更された診療時間
         $isChanged = FALSE;
         $changedHours = explode(',', $request->input('changed-list'));
+
         foreach ($changedHours as $changedHour) {
             if ($changedHour !== '') {
                 // $changedHourは 「DB上のid_曜日番号-曜日内で何個目か」の形で値が格納されている

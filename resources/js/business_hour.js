@@ -30,6 +30,9 @@ class BusinessHoursController {
         // 病院のSelectタグにイベント設定
         this.hospitalSelect = document.querySelector('select[name="hospital"]');
         this.hospitalSelect.addEventListener('change', this.changeHospital.bind(this));
+
+        // 「変更を保存」ボタンにイベント設定
+        document.querySelector('#btn_submit').addEventListener('click', this.validate.bind(this));
     }
 
     // 画面読み込み時の定休日の設定
@@ -53,8 +56,7 @@ class BusinessHoursController {
         const targetBusinessHours = document.querySelector(`#business_hours${dayOfWeek}`);
 
         // 追加時のID番号と新しいidやnameで使うもの
-        const newIdNumber = Number(targetBusinessHours.lastElementChild.id.split('-').pop()) + 1;
-        const newId = `${dayOfWeek}-${newIdNumber}`;
+        const newId = this.getNewId(targetBusinessHours);
 
         // 診療時間を1組コピー
         const cloneElement = targetBusinessHours.children[0].cloneNode(true);
@@ -84,6 +86,18 @@ class BusinessHoursController {
         addedList.value += `${newId},`;
 
         targetBusinessHours.appendChild(cloneElement);
+    }
+
+    // 新規追加する診療時間を示す番号を取得(「曜日番号」-「曜日の中で何番目か」の形 例:0-1)
+    getNewId(targetBusinessHours) {
+        const dayOfWeek = parseInt(targetBusinessHours.id.replace('business_hours', ''));
+        const lastChild = targetBusinessHours.lastElementChild;
+
+        if (lastChild.classList.contains('error-message')) {
+            return `${dayOfWeek}-${parseInt(lastChild.previousElementSibling.id.split('-').pop()) + 1}`;
+        } else {
+            return `${dayOfWeek}-${parseInt(lastChild.id.split('-').pop()) + 1}`;
+        }
     }
 
     /**　追加分の時間と分のSelectタグの名前とID変更、デフォルト値設定 */
@@ -130,13 +144,15 @@ class BusinessHoursController {
 
         // 削除対象が既存のものだったら削除リストに追加、新規追加したものを削除する場合は追加リストから削除
         if (businessHourId.value !== '') {
-            const deletedList = document.querySelector('input[name="deleted-list"]');
-            deletedList.value += `${businessHourId.value},`;
+            document.querySelector('input[name="deleted-list"]').value += `${businessHourId.value},`;
         } else {
-            const addedList = document.querySelector('input[name="added-list"]');
-            addedList.value = addedList.value.replace(`${targetId},`, '');
+            document.querySelector('input[name="added-list"]').value = document.querySelector('input[name="added-list"]').value.replace(`${targetId},`, '');
         }
 
+        // 削除対象にエラーメッセージが表示されていた場合エラーメッセージも削除
+        if (deleteTarget.nextElementSibling !== null && deleteTarget.nextElementSibling.classList.contains('error-message')) {
+            deleteTarget.nextElementSibling.remove();
+        }
         deleteTarget.remove();
     }
 
@@ -206,6 +222,74 @@ class BusinessHoursController {
      */
     changeHospital() {
         window.location.href = `/business_hour/${this.hospitalSelect.value}`;
+    }
+
+    /**
+     * 診療時間のバリデーション
+     * PHPでバリデーションした場合、新規の診療時間がバリデーションに引っかかるとDBに保存されない⇒
+     * 画面読み込み時にDBからデータを引っ張るためバリデーションに引っかかった新規診療時間が消えてしまうので、jsで先に行う
+     */
+    validate(event) {
+        const invalidBusinessHours = this.validateBusinessHours();
+
+        if (invalidBusinessHours.length > 0) {
+            invalidBusinessHours.forEach(invalidBusinessHour => this.showErrorMessage(`business_hour${invalidBusinessHour}`, 'businessHour'));
+            event.preventDefault();
+        }
+    }
+
+    /**
+     * 診療時間の開始時間と終了時間のバリデーションを全て行い、引っかかったものをinvalidBusinessHoursに格納
+     */
+    validateBusinessHours() {
+        const businessHours = document.querySelectorAll('.business_hour_id');
+        const invalidBusinessHours = [];
+
+        businessHours.forEach(businessHour => {
+            if (!this.validateBusinessHour(businessHour.name.replace('business_hour_id', ''))) {
+                invalidBusinessHours.push(businessHour.name.replace('business_hour_id', ''));
+            }
+        });
+        return invalidBusinessHours;
+    }
+
+    /**
+     * 診療時間の開始時間と終了時間のバリデーション
+     * @param businessHourId 診療時間を識別するためのid:「曜日番号」-曜日の中で何番目か」の形(例:0-1)
+     */
+    validateBusinessHour(businessHourId) {
+        const startHour = document.querySelector(`select[name="start_hour${businessHourId}"]`);
+        const startMinute = document.querySelector(`select[name="start_minute${businessHourId}"]`);
+        const endHour = document.querySelector(`select[name="end_hour${businessHourId}"]`);
+        const endMinute = document.querySelector(`select[name="end_minute${businessHourId}"]`);
+
+        // 診療時間が新規追加されたもので、時間が選択されていないものは飛ばす
+        // それ以外は終了時間が開始時間より前の場合にfalseを返す
+        if (startHour.value === 'default' || startMinute.value === 'default' || endHour.value === 'default' || endMinute.value === 'default') {
+            return true;
+        } else if (60 * parseInt(startHour.value) + parseInt(startMinute.value) >= 60 * parseInt(endHour.value) + parseInt(endMinute.value)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // エラーメッセージ表示
+    showErrorMessage(businessHourId, option) {
+        const errorElement = document.createElement('p');
+        let targetElement
+        if (option === 'businessHour') {
+            targetElement = document.querySelector(`#${businessHourId}`);
+
+            // 既にエラーメッセージが表示されている場合は抜ける
+            if (targetElement.nextElementSibling !== null && targetElement.nextElementSibling.classList.contains('error-message')) {
+                return;
+            }
+            errorElement.innerHTML = '終了時間は開始時間より後に設定してください。';
+            errorElement.classList.add('error-message');
+            errorElement.classList.add('text-center');
+        }
+        targetElement.after(errorElement);
     }
 
     // イベントリスナー設定
