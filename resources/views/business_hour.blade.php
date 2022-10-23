@@ -33,7 +33,7 @@
                     {{-- $holidayKey:その曜日が定休日かを表すカラム名(「is_open_曜日」の形、月曜日なら is_open_mon) --}}
                     <?php $holidayKey = 'is_open_' . $daysOfWeek[$dayNum][0]; ?>
 
-                    <div class="time__item">
+                    <div class="time__item" id="time__item{{ $dayNum }}">
                         <span class="time__item-day">{{ $daysOfWeek[$dayNum][1] }}</span>
                         <span class="time__holiday radius btn-red none" id="holiday-{{ $dayNum }}">定休日</span>
                         <input type="hidden" name="is_open{{ $dayNum }}" value="{{ old('is_open' . $dayNum, $selectedHospital->$holidayKey) }}">

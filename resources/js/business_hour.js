@@ -1,3 +1,5 @@
+const { error } = require("laravel-mix/src/Log");
+
 window.addEventListener('DOMContentLoaded', function () {
     // ページの読み込み終わってから表示
     document.querySelector('.local-container').classList.remove('hidden');
@@ -231,13 +233,21 @@ class BusinessHoursController {
      */
     validate(event) {
         const invalidBusinessHours = this.validateBusinessHours();
+        let isError = false;
 
         if (invalidBusinessHours.length > 0) {
-            invalidBusinessHours.forEach(invalidBusinessHour => this.showErrorMessage(`business_hour${invalidBusinessHour}`, 'businessHour'));
-            event.preventDefault();
+            invalidBusinessHours.forEach(invalidBusinessHour => this.showErrorMessage(document.querySelector(`#business_hour${invalidBusinessHour}`), 'businessHour'));
+            isError = true;
         }
-    }
+        for (let i = 0; i < 6; i++) {
+            if (this.validateTimeSeries(i) === false) {
+                this.showErrorMessage(document.querySelector(`#time__item${i}`), 'timeSeries');
+                isError = true;
+            }
+        }
 
+        if (isError === true) event.preventDefault();
+    }
     /**
      * 診療時間の開始時間と終了時間のバリデーションを全て行い、引っかかったものをinvalidBusinessHoursに格納
      */
@@ -274,20 +284,54 @@ class BusinessHoursController {
         }
     }
 
-    // エラーメッセージ表示
-    showErrorMessage(businessHourId, option) {
-        const errorElement = document.createElement('p');
-        let targetElement
-        if (option === 'businessHour') {
-            targetElement = document.querySelector(`#${businessHourId}`);
+    /**
+     * 曜日内で診療時間が上から時系列に設定されているか確認
+     */
+    validateTimeSeries(dayOfWeek) {
+        const targetBusinessHours = [];
+        let startHour;
+        let startMinute;
+        let endHour;
+        let endMinute;
+        let result = true;
 
-            // 既にエラーメッセージが表示されている場合は抜ける
-            if (targetElement.nextElementSibling !== null && targetElement.nextElementSibling.classList.contains('error-message')) {
-                return;
+        for (let i = 1; i <= 5; i++) {
+            if (document.querySelector(`input[name="business_hour_id${dayOfWeek}-${i}"]`) === null) continue;
+
+            startHour = document.querySelector(`select[name="start_hour${dayOfWeek}-${i}"]`).value;
+            startMinute = document.querySelector(`select[name="start_minute${dayOfWeek}-${i}"]`).value;
+            endHour = document.querySelector(`select[name="end_hour${dayOfWeek}-${i}"]`).value;
+            endMinute = document.querySelector(`select[name="end_minute${dayOfWeek}-${i}"]`).value;
+
+            if (startHour === 'default' || startMinute === 'default' || endHour === 'default' || endMinute === 'default') continue;
+
+            if (i !== 1) targetBusinessHours.push(60 * parseInt(startHour) + parseInt(startMinute));
+            targetBusinessHours.push(60 * parseInt(endHour) + parseInt(endMinute));
+        }
+
+        for (let j = 0; j < targetBusinessHours.length; j = j + 2) {
+            if (j < targetBusinessHours.length - 1 && targetBusinessHours[j] >= targetBusinessHours[j + 1]) {
+                result = false;
+                return result;
             }
+        }
+        return result;
+    }
+
+    // エラーメッセージ表示
+    showErrorMessage(targetElement, option) {
+        const errorElement = document.createElement('p');
+
+        // 既にエラーメッセージが表示されている場合は抜ける
+        if (targetElement.nextElementSibling !== null && targetElement.nextElementSibling.classList.contains('error-message')) return;
+
+        errorElement.classList.add('error-message');
+        errorElement.classList.add('text-center');
+
+        if (option === 'businessHour') {
             errorElement.innerHTML = '終了時間は開始時間より後に設定してください。';
-            errorElement.classList.add('error-message');
-            errorElement.classList.add('text-center');
+        } else if (option === 'timeSeries') {
+            errorElement.innerHTML = '各曜日の診療時間は上から時系列で設定してください。';
         }
         targetElement.after(errorElement);
     }
