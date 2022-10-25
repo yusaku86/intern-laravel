@@ -39,12 +39,16 @@
             display: none;
         }
 
-        &::after {
+        &-line {
             margin-top: 10px;
-            content: "";
+            margin-bottom: 10px;
             height: 1px;
             width: 100%;
             background: rgba(224, 221, 221, 0.717);
+
+            &:last-child {
+                display: none;
+            }
         }
 
         &-hour {

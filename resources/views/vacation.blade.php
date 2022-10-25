@@ -7,11 +7,7 @@
                 <input type="hidden" name="is_hospital_changed" value="">
                 <select name="hospital" class="header__hospital">
                     @foreach ($hospitals as $hospital)
-                        @if ($hospital->id === $selectedId)
-                            <option value={{ $hospital->id }} selected>{{ $hospital->name }}</option>
-                        @else
-                            <option value={{ $hospital->id }}>{{ $hospital->name }}</option>
-                        @endif
+                        <option value={{ $hospital->id }} @if ($hospital->id === $selectedId) selected @endif>{{ $hospital->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -20,15 +16,22 @@
                 <div class="vacation__add">
                     <span>期間</span>
                     <div class="vacation__add-period">
-                        <input class="vacation__add-start" name="add_start-date" type="date">
+                        <input class="vacation__add-start" name="add_start-date" type="date" value="{{ old('add_start-date') }}">
                         <span>～</span>
-                        <input class="vacation__add-end" name="add_end-date" type="date">
-                        <input class="vacation__add-reason" name="add_reason" type="text" placeholder="理由を入力">
+                        <input class="vacation__add-end" name="add_end-date" type="date" value="{{ old('add_end-date') }}">
+                        <input class="vacation__add-reason" name="add_reason" type="text" placeholder="理由を入力" value="{{ old('add_reason') }}">
                     </div>
                     <div class="vacation__add-btn">
                         <button type="button" class="btn btn-blue" id="btn_add">保存する</button>
                     </div>
                 </div>
+                {{-- エラーメッセージ --}}
+                @error('time_series')
+                    <p class="error-message text-center">{{ $message }}</p>
+                @enderror
+                @error('add_reason')
+                    <p class="error-message text-center">{{ $message }}</p>
+                @enderror
 
                 <div class="vacation__list mt-lg">
                     @foreach ($vacations as $vacation)

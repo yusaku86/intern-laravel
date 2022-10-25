@@ -88,6 +88,9 @@ class BusinessHoursController {
         addedList.value += `${newId},`;
 
         targetBusinessHours.appendChild(cloneElement);
+
+        // 曜日内で診療時間が5個になったらそれ以上追加できなくする
+        if (this.countBusinessHours(dayOfWeek) === 5) document.querySelector(`#btn_add${dayOfWeek}`).disabled = true;
     }
 
     // 新規追加する診療時間を示す番号を取得(「曜日番号」-「曜日の中で何番目か」の形 例:0-1)
@@ -110,6 +113,17 @@ class BusinessHoursController {
         })
     }
 
+    /**
+     * 曜日の中にいくつ診療時間があるかを求める
+     */
+    countBusinessHours(dayOfWeek) {
+        const targetBusinessHours = document.querySelector(`#business_hours${dayOfWeek}`);
+        let result = 0;
+        for (let i = 0; i < targetBusinessHours.children.length; i++) {
+            if (targetBusinessHours.children[i].classList.contains('time__item-business_hour')) result++
+        }
+        return result;
+    }
     /**
      * 追加分の時間と分のセレクトタグの名前変更
      * @params timeType 時間か分のどちらか
@@ -156,6 +170,9 @@ class BusinessHoursController {
             deleteTarget.nextElementSibling.remove();
         }
         deleteTarget.remove();
+
+        // 「時間を追加」ボタンを有効化
+        document.querySelector(`#btn_add${dayOfWeek}`).disabled = false;
     }
 
     /**
@@ -181,11 +198,11 @@ class BusinessHoursController {
      * @params dayOfWeek 曜日番号
      */
     setHoliday(dayOfWeek) {
-        // 診療時間グループ
+        // 診療時間グループを非表示(表示)
         const targetBusinessHours = document.querySelector(`#business_hours${dayOfWeek}`);
         targetBusinessHours.classList.toggle('none');
 
-        // 定休日のタグ
+        // 定休日のタグを非表示(表示)
         const targetHoliday = document.querySelector(`#holiday-${dayOfWeek}`);
         targetHoliday.classList.toggle('none');
 
@@ -196,9 +213,13 @@ class BusinessHoursController {
             document.querySelector(`#btn_holiday${dayOfWeek}`).innerHTML = '定休日を解除';
         }
 
-        // 「時間を追加」ボタン
+        // 「時間を追加」ボタンの非表示(表示)
         const addBtn = document.querySelector(`#btn_add${dayOfWeek}`);
         addBtn.classList.toggle('hidden');
+
+        // エラーメッセージがあれば非表示
+        const nextElement = document.querySelector(`#time__item${dayOfWeek}`).nextElementSibling;
+        if (nextElement.classList.contains('error-message')) nextElement.classList.toggle('none');
     }
 
     /**
@@ -239,7 +260,7 @@ class BusinessHoursController {
             invalidBusinessHours.forEach(invalidBusinessHour => this.showErrorMessage(document.querySelector(`#business_hour${invalidBusinessHour}`), 'businessHour'));
             isError = true;
         }
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i <= 6; i++) {
             if (this.validateTimeSeries(i) === false) {
                 this.showErrorMessage(document.querySelector(`#time__item${i}`), 'timeSeries');
                 isError = true;
@@ -335,6 +356,10 @@ class BusinessHoursController {
             errorElement.innerHTML = '各曜日の診療時間は上から時系列で設定してください。';
         }
         targetElement.after(errorElement);
+
+        // 「保存しました」のメッセージが表示されている場合は削除
+        const successMessage = document.querySelector('.success-message');
+        if (successMessage !== null && successMessage.classList.contains('success-message')) successMessage.remove();
     }
 
     // イベントリスナー設定

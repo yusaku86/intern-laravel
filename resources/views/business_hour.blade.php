@@ -121,7 +121,7 @@
                     @error('time_series' . $dayNum)
                         <p class="error-message text-center">{{ $message }}</p>
                     @enderror
-
+                    <div class="time__item-line"></div>
                 @endfor
             </div>
             {{-- 「保存しました」のメッセージ --}}

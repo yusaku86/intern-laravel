@@ -1,4 +1,4 @@
-.content-width, .header, .account {
+.content-width {
   width: 90%;
   margin: 0 auto;
 }
@@ -87,35 +87,53 @@
 
 .local-container {
   flex-basis: 80%;
-  background: rgb(241, 241, 241);
 }
 
-.header__title {
-  font-size: 1.3em;
-}
-
-.account {
-  background: white;
-  padding: 10px 0 20px 0;
-}
-.account__item {
+.header {
   display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
+  justify-content: center;
 }
-.account__item-header {
+.header__title {
+  display: flex;
+  justify-content: flex-start;
+  flex-basis: 10%;
+}
+.header__user {
+  display: flex;
+  flex-basis: 60%;
+  justify-content: flex-end;
+}
+.header__user-id {
+  text-align: center;
+  padding: 0 4px;
+  background: rgba(228, 226, 226, 0.966);
+}
+.header__btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 10px;
+  flex-basis: 10%;
+}
+.header__btn .btn {
+  background: rgb(2, 1, 113);
+  padding: 1px 4px;
+  color: white;
+  border-radius: 10px;
+}
+
+.home {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: 60px;
+}
+.home__item {
   display: flex;
   flex-basis: 20%;
-  justify-content: flex-end;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.account__item-content {
-  flex-basis: 60%;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-}
-.account__item > input {
-  border: 1px solid black;
-}
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid rgba(40, 144, 218, 0.749);
+  color: rgba(40, 144, 218, 0.749);
+  border-radius: 3px;
+}/*# sourceMappingURL=home.css.map */

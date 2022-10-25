@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'hospital_name' => 'required | unique:hospitals,name',
+            'hospital_name' => 'required | unique:hospitals,name| max:50',
         ];
     }
 }
