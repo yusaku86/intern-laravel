@@ -79,4 +79,14 @@ Route::middleware('auth')->group(function () {
         // 病院登録実行
         Route::post('/', [\App\Http\Controllers\HospitalController::class, 'create'])->name('hospital.create');
     });
+
+    // CSVダウンロード
+    Route::prefix('download')->group(function () {
+        // CSVダウンロード画面表示
+        Route::get('/', [\App\Http\Controllers\DownloadController::class, 'index'])->name('download.index');
+        // 診療時間CSVダウンロード
+        Route::get('/business_hour/{id}', [\App\Http\Controllers\DownloadController::class, 'downloadBusinessHourCsv'])->name('downlaod.business_hour');
+        // 長期休暇ダウンロード
+        Route::get('/vacation/{id}', [\App\Http\Controllers\DownloadController::class, 'downloadVacationCsv'])->name('download.vacation');
+    });
 });

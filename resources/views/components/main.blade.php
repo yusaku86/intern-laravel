@@ -30,6 +30,9 @@
             <div class="side-menu__item">
                 <a class="side-menu__btn side-menu__link" href="{{ route('hospital') }}">病院登録</a>
             </div>
+            <div class="side-menu__item">
+                <a class="side-menu__btn side-menu__link" href="{{ route('download.index') }}">CSVダウンロード</a>
+            </div>
         </div>
 
         {{ $slot }}

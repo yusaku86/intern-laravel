@@ -1,4 +1,4 @@
-.content-width {
+.content-width, .local-container, .page-title, .download {
   width: 90%;
   margin: 0 auto;
 }
@@ -61,6 +61,10 @@
   background: rgba(3, 0, 80, 0.806);
   color: white;
 }
+.btn-green {
+  background: rgba(12, 202, 113, 0.959);
+  color: white;
+}
 .btn-skyblue {
   background: rgba(216, 226, 247, 0.717);
   color: rgb(24, 142, 253);
@@ -86,54 +90,38 @@
 }
 
 .local-container {
-  flex-basis: 80%;
+  background: rgb(241, 241, 241);
 }
 
-.header {
-  display: flex;
-  justify-content: center;
+.page-title {
+  font-size: 20px;
 }
-.header__title {
-  display: flex;
-  justify-content: flex-start;
-  flex-basis: 10%;
+
+.download {
+  background: white;
+  padding: 10px 15px;
 }
-.header__user {
-  display: flex;
-  flex-basis: 60%;
-  justify-content: flex-end;
+.download__title {
+  font-size: 18px;
 }
-.header__user-id {
+.download__item {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+.download__item-hospital {
+  flex-basis: 30%;
+  display: flex;
+  -webkit-appearance: menulist;
+     -moz-appearance: menulist;
+          appearance: menulist;
   text-align: center;
-  padding: 0 4px;
-  background: rgba(228, 226, 226, 0.966);
+  align-items: center;
+  border: solid 1px black;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.header__btn {
-  display: flex;
-  justify-content: flex-end;
-  margin-left: 10px;
-  flex-basis: 10%;
+.download__item-btn {
+  margin-left: 15px;
 }
-.header__btn .btn {
-  background: rgb(2, 1, 113);
-  padding: 1px 4px;
-  color: white;
-  border-radius: 10px;
-}
-
-.home {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  margin-top: 60px;
-}
-.home__item {
-  display: flex;
-  flex-basis: 20%;
-  justify-content: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border: 1px solid rgba(40, 144, 218, 0.749);
-  color: rgba(40, 144, 218, 0.749);
-  border-radius: 3px;
-}/*# sourceMappingURL=home.css.map */
