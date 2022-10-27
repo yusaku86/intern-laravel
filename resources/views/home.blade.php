@@ -14,9 +14,12 @@
         <div class="home">
             <a class="home__item" href="{{ route('business_hour') }}">診察時間編集</a>
             <a class="home__item" href="{{ route('vacation') }}">長期休業設定</a>
-            <a class="home__item" href="{{ route('account.index') }}">アカウント情報</a>
-            <a class="home__item" href="{{ route('hospital') }}">病院登録</a>
-            <a class="home__item" href="{{ route('download.index') }}">CSVダウンロード</a>
+
+            @can('administrator')
+                <a class="home__item" href="{{ route('account.index') }}">アカウント情報</a>
+                <a class="home__item" href="{{ route('hospital') }}">病院登録</a>
+                <a class="home__item" href="{{ route('download.index') }}">CSVダウンロード</a>
+            @endcan
         </div>
     </div>
 </x-main>

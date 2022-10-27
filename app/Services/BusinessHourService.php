@@ -5,7 +5,6 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Models\Business_hour;
 use App\Models\Hospital;
-use Carbon\Carbon;
 
 class BusinessHourService
 {
@@ -15,22 +14,12 @@ class BusinessHourService
         $startTime = $this->getTime($request, 'start', $htmlId);
         $endTime = $this->getTime($request, 'end', $htmlId);
 
-        if ($startTime === 'default' || $endTime === 'default') {
-            return;
-        }
-
         Business_hour::create([
             'hospital_id' => $request->input('hospital'),
             'days_of_week' => $daysOfWeek,
-            'start_time' => $this->getTime($request, 'start', $htmlId),
-            'end_time' => $this->getTime($request, 'end', $htmlId),
+            'start_time' => $startTime,
+            'end_time' => $endTime,
         ]);
-    }
-
-    // 診療時間の削除
-    public function deleteBusinessHour($businessHourId)
-    {
-        Business_hour::destroy($businessHourId);
     }
 
     // 診療時間の変更
@@ -66,7 +55,7 @@ class BusinessHourService
     }
 
     // 診療開始時間(終了時間)の値をhtmlから取得(分は2桁に0埋め)
-    private function getTime(Request $request, $timeType, $htmlId)
+    public function getTime(Request $request, $timeType, $htmlId)
     {
         // 新規追加したもので値を初期値(-)から変えていない場合は、defalutと返す
         if ($request->input($timeType . '_hour' . $htmlId) === 'default' || $request->input($timeType . '_minute' . $htmlId) === 'default') {

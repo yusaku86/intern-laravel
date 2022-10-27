@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Hospital;
 use App\Models\Vacation;
-
 use App\Http\Requests\VacationRequest;
 
 class VacationController extends Controller

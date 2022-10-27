@@ -1,4 +1,6 @@
-<?php declare(strict_types=1); ?>
+<?php
+
+declare(strict_types=1); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -24,17 +26,19 @@
             <div class="side-menu__item">
                 <a class="side-menu__btn side-menu__link" href="{{ route('vacation') }}" ">長期休業設定</a>
             </div>
-            <div class="side-menu__item">
-                <a class="side-menu__btn side-menu__link" href="{{ route('account.index') }}">アカウント情報</a>
-            </div>
-            <div class="side-menu__item">
-                <a class="side-menu__btn side-menu__link" href="{{ route('hospital') }}">病院登録</a>
-            </div>
-            <div class="side-menu__item">
-                <a class="side-menu__btn side-menu__link" href="{{ route('download.index') }}">CSVダウンロード</a>
-            </div>
-        </div>
 
+            @can('administrator')
+                <div class="side-menu__item">
+                    <a class="side-menu__btn side-menu__link" href="{{ route('account.index') }}">アカウント情報</a>
+                </div>
+                <div class="side-menu__item">
+                    <a class="side-menu__btn side-menu__link" href="{{ route('hospital') }}">病院登録</a>
+                </div>
+                <div class="side-menu__item">
+                <a class="side-menu__btn side-menu__link" href="{{ route('download.index') }}">CSVダウンロード</a>
+                </div>
+            @endcan
+        </div>
         {{ $slot }}
     </div>
 </body>

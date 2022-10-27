@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
 
         // 診療時間設定
         Route::post('/', [\App\Http\Controllers\BusinessHourController::class, 'executeQuery'])->name('business_hour.execute');
+
+        // 診療時間削除
+        Route::post('/delete/{businessHourId}', [\App\Http\Controllers\BusinessHourController::class, 'deleteBusinessHour'])->name('business_hour.delete');
     });
 
     // 長期休暇関連
@@ -50,43 +53,46 @@ Route::middleware('auth')->group(function () {
         Route::get('/delete/{id}', [\App\Http\Controllers\VacationController::class, 'delete'])->name('vacation.delete');
     });
 
-    // ユーザー関連
-    Route::prefix('account')->group(function () {
-        // ユーザー一覧表示
-        Route::get('/', [\App\Http\Controllers\AdminUserController::class, 'index'])->name('account.index');
+    // 以下管理者のみ実行可能
+    Route::group(['middleware' => 'administrator'], function () {
+        // ユーザー関連
+        Route::prefix('account')->group(function () {
+            // ユーザー一覧表示
+            Route::get('/', [\App\Http\Controllers\AdminUserController::class, 'index'])->name('account.index');
 
-        // ユーザー削除
-        Route::get('/delete/{id}', [\App\Http\Controllers\AdminUserController::class, 'delete'])->name('account.delete');
+            // ユーザー削除
+            Route::get('/delete/{id}', [\App\Http\Controllers\AdminUserController::class, 'delete'])->name('account.delete');
 
-        // ユーザーパスワード変更画面表示
-        Route::get('/pass/{id}', [\App\Http\Controllers\AdminUserController::class, 'indexChangePass'])->name('account.change_pass');
+            // ユーザーパスワード変更画面表示
+            Route::get('/pass/{id}', [\App\Http\Controllers\AdminUserController::class, 'indexChangePass'])->name('account.change_pass');
 
-        // ユーザーパスワード変更実行
-        Route::post('/pass/{id}', [\App\Http\Controllers\AdminUserController::class, 'updatePass'])->name('account.change_pass_execute');
+            // ユーザーパスワード変更実行
+            Route::post('/pass/{id}', [\App\Http\Controllers\AdminUserController::class, 'updatePass'])->name('account.change_pass_execute');
 
-        // ユーザー追加画面表示
-        Route::get('/create', [\App\Http\Controllers\AdminUserController::class, 'indexAddPage'])->name('account.create');
+            // ユーザー追加画面表示
+            Route::get('/create', [\App\Http\Controllers\AdminUserController::class, 'indexAddPage'])->name('account.create');
 
-        // ユーザー追加を実行
-        Route::post('/account/create', [\App\Http\Controllers\AdminUserController::class, 'create'])->name('account.create-execute');
-    });
+            // ユーザー追加を実行
+            Route::post('/account/create', [\App\Http\Controllers\AdminUserController::class, 'create'])->name('account.create-execute');
+        });
 
-    // 病院登録関連
-    Route::prefix('hospital')->group(function () {
-        // 病院登録画面表示
-        Route::get('/', [\App\Http\Controllers\HospitalController::class, 'index'])->name('hospital');
+        // 病院登録関連
+        Route::prefix('hospital')->group(function () {
+            // 病院登録画面表示
+            Route::get('/', [\App\Http\Controllers\HospitalController::class, 'index'])->name('hospital');
 
-        // 病院登録実行
-        Route::post('/', [\App\Http\Controllers\HospitalController::class, 'create'])->name('hospital.create');
-    });
+            // 病院登録実行
+            Route::post('/', [\App\Http\Controllers\HospitalController::class, 'create'])->name('hospital.create');
+        });
 
-    // CSVダウンロード
-    Route::prefix('download')->group(function () {
-        // CSVダウンロード画面表示
-        Route::get('/', [\App\Http\Controllers\DownloadController::class, 'index'])->name('download.index');
-        // 診療時間CSVダウンロード
-        Route::get('/business_hour/{id}', [\App\Http\Controllers\DownloadController::class, 'downloadBusinessHourCsv'])->name('downlaod.business_hour');
-        // 長期休暇ダウンロード
-        Route::get('/vacation/{id}', [\App\Http\Controllers\DownloadController::class, 'downloadVacationCsv'])->name('download.vacation');
+        // CSVダウンロード
+        Route::prefix('download')->group(function () {
+            // CSVダウンロード画面表示
+            Route::get('/', [\App\Http\Controllers\DownloadController::class, 'index'])->name('download.index');
+            // 診療時間CSVダウンロード
+            Route::get('/business_hour/{id}', [\App\Http\Controllers\DownloadController::class, 'downloadBusinessHourCsv'])->name('downlaod.business_hour');
+            // 長期休暇ダウンロード
+            Route::get('/vacation/{id}', [\App\Http\Controllers\DownloadController::class, 'downloadVacationCsv'])->name('download.vacation');
+        });
     });
 });

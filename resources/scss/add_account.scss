@@ -40,5 +40,15 @@
             border-radius: 3px;
             padding: 4px 6px;
         }
+
+        &-select {
+            appearance: menulist;
+            justify-content: flex-end;
+            margin-left: 15px;
+            flex-basis: 50%;
+            border: 1px solid black;
+            border-radius: 3px;
+            padding: 4px 6px;
+        }
     }
 }

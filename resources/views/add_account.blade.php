@@ -14,7 +14,17 @@
                     <p class="error-message text-center">{{ $message }}</p>
                 @enderror
                 <div class="account__form-item">
-                    <span class="account__form-label">パスワード</span>
+                    <span class="account__form-label">権限</span>
+                    <select class="account__form-select" name="authority">
+                        <option class="text-center" value="user">一般ユーザー</option>
+                        <option class="text-center" value="administrator">管理者</option>
+                    </select>
+                </div>
+                @error('authority')
+                    <p class="error-message text-center">{{ $message }}</p>
+                @enderror
+                <div class="account__form-item">
+                    <span class="account__form-label text-center">パスワード</span>
                     <input type="password" class="account__form-input" name="password" value="{{ old('password') }}">
                 </div>
                 @error('password')

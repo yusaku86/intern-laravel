@@ -42,6 +42,10 @@
   margin-right: 16px;
 }
 
+.ml-sm {
+  margin-left: 8px;
+}
+
 .btn {
   padding: 4px 16px;
   border-radius: 3px;
@@ -78,6 +82,10 @@
   background: rgb(252, 229, 229);
   color: red;
   border: solid 1px rgb(253, 24, 62);
+}
+
+.pointer-none {
+  pointer-events: none;
 }
 
 .radius {
@@ -117,6 +125,17 @@
   align-items: center;
 }
 .account__form-input {
+  justify-content: flex-end;
+  margin-left: 15px;
+  flex-basis: 50%;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 4px 6px;
+}
+.account__form-select {
+  -webkit-appearance: menulist;
+     -moz-appearance: menulist;
+          appearance: menulist;
   justify-content: flex-end;
   margin-left: 15px;
   flex-basis: 50%;

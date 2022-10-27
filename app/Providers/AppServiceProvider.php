@@ -25,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // バリデーションルール追加
-        Validator::extend('password', 'App\Rules\Password@passes');
+        Validator::extend('mixedCaseAndSymbol', 'App\Rules\Password@passes');
     }
 }

@@ -25,6 +25,7 @@ class AdminUserController extends Controller
     {
         Admin_user::create([
             'email' => $request->email(),
+            'authority' => $request->authority(),
             'password' => password_hash($request->password, PASSWORD_DEFAULT)
         ]);
 

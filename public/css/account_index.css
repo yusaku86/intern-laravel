@@ -42,6 +42,10 @@
   margin-right: 16px;
 }
 
+.ml-sm {
+  margin-left: 8px;
+}
+
 .btn {
   padding: 4px 16px;
   border-radius: 3px;
@@ -80,6 +84,10 @@
   border: solid 1px rgb(253, 24, 62);
 }
 
+.pointer-none {
+  pointer-events: none;
+}
+
 .radius {
   border-radius: 10px;
   padding: 2px 0;
@@ -95,9 +103,15 @@
 }
 
 .account__header {
+  display: flex;
   padding: 5px 10px;
   background: rgb(165, 165, 165);
   color: white;
+}
+.account__header-item {
+  flex-basis: 50%;
+  padding-left: 25px;
+  font-size: 1.2em;
 }
 .account__list {
   background: white;
@@ -109,7 +123,11 @@
 }
 .account__list-email {
   text-align: left;
-  flex-basis: 50%;
+  flex-basis: 30%;
+}
+.account__list-authority {
+  text-align: center;
+  flex-basis: 30%;
 }
 .account__list-line {
   height: 1px;

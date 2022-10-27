@@ -3,7 +3,6 @@
 namespace App\Http\Requests\AdminUser;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\Password;
 
 class CreateRequest extends FormRequest
 {
@@ -26,7 +25,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'email'                 => 'required | email | unique:admin_users',
-            'password'              => 'required | confirmed | password',
+            'authority'             => 'required',
+            'password'              => 'required | confirmed | mixedCaseAndSymbol',
             'password_confirmation' => 'required'
         ];
     }
@@ -40,5 +40,10 @@ class CreateRequest extends FormRequest
     public function password()
     {
         return $this->input('password');
+    }
+
+    public function authority()
+    {
+        return $this->input('authority');
     }
 }

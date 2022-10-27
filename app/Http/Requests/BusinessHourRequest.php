@@ -27,19 +27,22 @@ class BusinessHourRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_hour0-1' => 'required'
+            'start_hour0-1' => 'max:255',
         ];
     }
 
     // 時間のバリデーション
     public function withValidator(Validator $validator)
     {
+        // 診療時間削除際はバリデーション通さない
+        if ($this->input('post-type') === 'delete') return;
+
         $validator->after(function ($validator) {
             // 開始時間と終了時間の確認
             foreach ($this->all() as $key => $__) {
                 // htmlエレメント名が start_hour0-0の形で、開始時間と終了時間のバリデートに引っかかったら
                 if (
-                    preg_match('/^start_hour\d-\d$/', $key) === 1
+                    preg_match('/^start_hour\d-\d{1,}$/', $key) === 1
                     && !$this->validateStartAndEnd(str_replace('start_hour', '', $key))
                 ) {
                     $validator->errors()->add('business_hour' . str_replace('start_hour', '', $key), '終了時間は開始時間より後に設定してください。');
@@ -92,20 +95,24 @@ class BusinessHourRequest extends FormRequest
             return $result;
         }
         // 曜日の診療時間を配列に格納(日曜日の開始時間は比較に不要なため格納しない)
-        // 各曜日の診療時間は5つまで設定できるため、1から5でループ(新規で時間が選択されてないものは飛ばす)
-        for ($i = 1; $i <= 5; $i++) {
+        // 新規で時間が選択されてないものは飛ばす
+        foreach ($this->all() as $key => $__) {
             if (
-                $this->has('business_hour_id' . $dayOfWeek . '-' . $i)
-                && $this->getTime('start', $dayOfWeek . '-' . $i) !== 'default'
-                && $this->getTime('end', $dayOfWeek . '-' . $i) !== 'default'
+                preg_match('/^business_hour_id' . preg_quote($dayOfWeek, '/') . '-\d{1,}$/', $key) === 1 ||
+                preg_match('/^business_hour_id_new' . preg_quote($dayOfWeek, '/') . '-\d{1,}$/', $key) === 1
             ) {
-                if ($i !== 1) {
-                    $targetBusinessHours[] = Carbon::createFromFormat('H:i', $this->getTime('start', $dayOfWeek . '-' . $i));
+                $businessHourNumber = str_replace('_new', '', str_replace('business_hour_id', '', $key));
+                if ($this->getTime('start', $businessHourNumber) === 'default' || $this->getTime('end', $businessHourNumber) === 'default') continue;
+
+                if (count($targetBusinessHours) !== 0) {
+                    $targetBusinessHours[] = Carbon::createFromFormat('H:i', $this->getTime('start', $businessHourNumber));
                 }
-                $targetBusinessHours[] = Carbon::createFromFormat('H:i', $this->getTime('end', $dayOfWeek . '-' . $i));
+                $targetBusinessHours[] = Carbon::createFromFormat('H:i', $this->getTime('end', $businessHourNumber));
+
+                // 各曜日で日曜日の開始時間をのぞくと最大9つ時間があるので,9つ格納したらループを終える
+                if (count($targetBusinessHours) >= 9) break;
             }
         }
-
         /**
          * 診療時間が上から時系列で設定されているか確認
          * 診療終了時間と1つ下の診療開始時間を比較

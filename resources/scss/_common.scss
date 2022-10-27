@@ -43,6 +43,10 @@
     margin-right: 16px;
 }
 
+.ml-sm {
+    margin-left: 8px;
+}
+
 .btn {
     padding: 4px 16px;
     border-radius: 3px;
@@ -85,6 +89,10 @@
         color: red;
         border: solid 1px rgb(253, 24, 62);
     }
+}
+
+.pointer-none {
+    pointer-events: none;
 }
 
 .radius {

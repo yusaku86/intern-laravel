@@ -13,9 +13,16 @@
     @extend .content-width;
 
     &__header {
+        display: flex;
         padding: 5px 10px;
         background: rgb(165, 165, 165);
         color: white;
+
+        &-item {
+            flex-basis: 50%;
+            padding-left: 25px;
+            font-size: 1.2em;
+        }
     }
 
     &__list {
@@ -29,7 +36,12 @@
 
         &-email {
             text-align: left;
-            flex-basis: 50%;
+            flex-basis: 30%;
+        }
+
+        &-authority {
+            text-align: center;
+            flex-basis: 30%;
         }
 
         &-line {
