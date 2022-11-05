@@ -1,72 +1,36 @@
 <x-main title="診察時間" css="{{ url(mix('css/business_hour.css')) }}">
 
     <?php
-    /* ---------------------------------------------------前処理----------------------------------------------------------*/
-    $oldInputs = session()->get('_old_input') ?? []; // フォームに入力した値
-    /**
-     * 新規追加の診療時間(値がnew_0-0の形のinputタグを格納)
-     * →new0-0の0-0の部分を切り取った配列$newBusinessHoursを作成
-     * バリデーションに引っかかった場合・既存の診療時間を削除した場合に使用
-     **/
-    if ($oldInputs !== []) {
-        // new_0-0の0-0部分を切り取り配列に格納
-        $newBusinessHours = array_map(
-            function ($value) {
-                return str_replace('new_', '', $value);
-            },
-            // oldInputsの中で値が new_で始まるものを抽出(新規追加の診療時間:new_0-0の形)
-            array_filter($oldInputs, function ($value) {
-                return preg_match('/^new_\d-\d$/', $value);
-            }),
-        );
-    } else {
-        $newBusinessHours = [];
-    }
+    // $businessHoursには選択した病院の診療時間を曜日番号で昇順に並び変えたコレクションを配列に変換したものが渡される
 
+    $oldInputs = session()->get('_old_input') ?? [];
+
+    // 新規追加の診療時間(バリデーションに引っかかった場合・既存の診療時間を削除した場合に使用)
+    // oldInputsの中で値が new_で始まるものを抽出(新規追加の診療時間:new_0-0の形)
+    $newBusinessHours = array_filter($oldInputs, function ($value) {
+        return preg_match('/^new_\d-\d$/', $value);
+    });
     /**
-     * $businessHoursには選択した病院の診療時間を曜日番号でソートしたコレクションが渡されるが、
-     * for文で処理する際、キー番号の順番がばらばらのため、for文で回したときに曜日番号順になるようにキー番号を格納した配列を作成
+     * 診療時間の配列($businessHours)の末尾に新規追加分を追加
+     * id                   ⇒ 新規かどうかを判断するため、また、日付番号で並び替えをする際に同じ日付番号の時は新規分があとに来るよう new という文字列を使用
+     * business_hour_number ⇒ htmlエレメントの名前やidに使用する。「日付番号 - 曜日内の新規で何個目か」の形。例:日曜日で2つめの新規 → 0-2
+     * days_of_week         ⇒ 日付番号
      **/
-    $sortedBusinessHours = [];
-    for ($i = 0; $i < 7; $i++) {
-        for ($j = 0; $j < count($businessHours); $j++) {
-            if ($businessHours[$j]->days_of_week === $i) {
-                // $iの値と曜日番号が一緒だったら、「$j - 曜日番号」の形で格納
-                $sortedBusinessHours[] = $j . '-' . $businessHours[$j]->days_of_week;
-            }
-        }
+    foreach ($newBusinessHours as $newBusinessHour) {
+        $businessHours[] = [
+            'id'                   => 'new',
+            'business_hour_number' => str_replace('new_', '', $newBusinessHour),
+            'days_of_week'         => (int) substr($newBusinessHour, 4, 1),
+        ];
     }
-    // 新規追加の診療時間も含めて、曜日番号順になるように配列を作成(診療時間の情報を出力する際のキー番号として使用)
-    if ($newBusinessHours === []) {
-        // $newBusinessHoursが空(新規追加分がない)の場合 ⇒ $sortedBusinessHoursの 0-0 を '-' で分割し、前半部分を格納
-        $keys = array_map(function ($value) {
-            return (int) explode('-', $value)[0];
-        }, $sortedBusinessHours);
-    } else {
-        $keys = [];
-    }
-    if ($newBusinessHours !== []) {
-        foreach ($sortedBusinessHours as $sortedBusinessHour) {
-            foreach ($newBusinessHours as $newBusinessHour) {
-                if ((int) substr($newBusinessHour, 0, 1) >= (int) explode('-', $sortedBusinessHour)[1]) {
-                    break;
-                } elseif ((int) substr($newBusinessHour, 0, 1) < (int) explode('-', $sortedBusinessHour)[1]) {
-                    $keys[] = $newBusinessHour;
-                    $newBusinessHours = array_values(array_diff($newBusinessHours, [$newBusinessHour]));
-                }
-            }
-            $keys[] = (int) explode('-', $sortedBusinessHour)[0];
-        }
-    }
-    // 上記の処理では土曜日の新規追加分が配列に追加されないので土曜日の新規追加分があれば追加
-    if ($newBusinessHours !== []) {
-        foreach ($newBusinessHours as $saturdayBusinessHour) {
-            $keys[] = $saturdayBusinessHour;
-        }
-    }
+    // 日付番号とidで昇順に並び替え
+    $daysOfWeekColumn = array_column($businessHours, 'days_of_week');
+    $idColumn         = array_column($businessHours, 'id');
+
+    array_multisort($daysOfWeekColumn, SORT_ASC, $idColumn, SORT_ASC, $businessHours);
+
     // 曜日を 「英語名、日本語名」で格納した配列。曜日を表示するところと、DBから値を取得する際に使用する。
     $daysOfWeek = [['sun', '日曜日'], ['mon', '月曜日'], ['tue', '火曜日'], ['wed', '水曜日'], ['thu', '木曜日'], ['fri', '金曜日'], ['sat', '土曜日']];
-    /* ---------------------------------------------------前処理----------------------------------------------------------*/
     ?>
 
     <div class="local-container hidden">
@@ -103,18 +67,15 @@
                         {{-- 診療時間グループ --}}
                         <div class="time__item-business_hours" id="business_hours{{ $dayNum }}">
 
-                            @foreach ($keys as $key)
-                                <?php
-                                $tmpBusinessHour = isset($businessHours[$key]) ? $businessHours[$key] : null;
-                                $isNew = $tmpBusinessHour === null ? true : false;
-                                ?>
+                            @foreach ($businessHours as $businessHour)
+                                <?php $isNew = $businessHour['id'] === 'new' ? true : false; ?>
 
                                 {{-- 診療時間の曜日番号が現在のループの曜日番号($dayNum)より大きければbreak, 異なればcontinue --}}
-                                @break(($isNew && (int) substr($key, 0, 1) > $dayNum) || (!$isNew && $tmpBusinessHour->days_of_week > $dayNum))
-                                @continue(($isNew && (int) substr($key, 0, 1) !== $dayNum) || (!$isNew && $tmpBusinessHour->days_of_week !== $dayNum))
+                                @break($businessHour['days_of_week'] > $dayNum)
+                                @continue($businessHour['days_of_week'] !== $dayNum)
 
                                 <?php
-                                $businessHourNumber = $isNew ? $key : $dayNum . '-' . $tmpBusinessHour->id;
+                                $businessHourNumber = $isNew ? $businessHour['business_hour_number'] : $dayNum . '-' . $businessHour['id'];
                                 $newOrBlank = $isNew ? '_new' : '';
                                 ?>
 
@@ -134,7 +95,7 @@
                                                 {{-- old関数の値と一致すれば選択、新規追加でなければDBの値がデフォルト値 --}}
                                                 <option value="{{ $j }}"
                                                     @if ($isNew && $j === (int) old('start_hour' . $businessHourNumber) && old('start_hour' . $businessHourNumber) !== 'default') selected
-                                                    @elseif (!$isNew && $j === (int) old('start_hour' . $businessHourNumber, substr($tmpBusinessHour->start_time, 0, 2))) selected @endif>
+                                                    @elseif (!$isNew && $j === (int) old('start_hour' . $businessHourNumber, substr($businessHour['start_time'], 0, 2))) selected @endif>
                                                     {{ $j }}
                                                 </option>
                                             @endfor
@@ -148,7 +109,7 @@
                                             @for ($k = 0; $k <= 59; $k++)
                                                 <option value="{{ $k }}"
                                                     @if ($isNew && $k === (int) old('start_minute' . $businessHourNumber) && old('start_minute' . $businessHourNumber) !== 'default') selected
-                                                    @elseif (!$isNew && $k === (int) old('start_minute' . $businessHourNumber, substr($tmpBusinessHour->start_time, 3, 2))) selected @endif>
+                                                    @elseif (!$isNew && $k === (int) old('start_minute' . $businessHourNumber, substr($businessHour['start_time'], 3, 2))) selected @endif>
                                                     {{ str_pad($k, 2, 0, STR_PAD_LEFT) }}
                                                 </option>
                                             @endfor
@@ -166,7 +127,7 @@
                                             @for ($l = 1; $l <= 23; $l++)
                                                 <option value="{{ $l }}"
                                                     @if ($isNew && $l === (int) old('end_hour' . $businessHourNumber) && old('end_hour' . $businessHourNumber) !== 'default') selected
-                                                    @elseif(!$isNew && $l === (int) old('end_hour' . $businessHourNumber, substr($tmpBusinessHour->end_time, 0, 2))) selected @endif>
+                                                    @elseif(!$isNew && $l === (int) old('end_hour' . $businessHourNumber, substr($businessHour['end_time'], 0, 2))) selected @endif>
                                                     {{ $l }}
                                                 </option>
                                             @endfor
@@ -180,7 +141,7 @@
                                             @for ($m = 0; $m <= 59; $m++)
                                                 <option value="{{ $m }}"
                                                     @if ($isNew && $m === (int) old('end_minute' . $businessHourNumber) && old('end_minute' . $businessHourNumber) !== 'default') selected
-                                                    @elseif (!$isNew && $m === (int) old('end_minute' . $businessHourNumber, substr($tmpBusinessHour->end_time, 3, 2))) selected @endif>
+                                                    @elseif (!$isNew && $m === (int) old('end_minute' . $businessHourNumber, substr($businessHour['end_time'], 3, 2))) selected @endif>
                                                     {{ str_pad($m, 2, 0, STR_PAD_LEFT) }}
                                                 </option>
                                             @endfor

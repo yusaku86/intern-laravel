@@ -15,7 +15,7 @@ class BusinessHourController extends Controller
     {
         $hospitals = Hospital::orderBy('id', 'asc')->get();
         $selectedId = $selectedId ?? $hospitals[0]->id;
-        $businessHours = Hospital::find($selectedId)->businessHours->sortBy('days_of_week');
+        $businessHours = Hospital::find($selectedId)->businessHours->sortBy('days_of_week')->toArray();
 
         return view('business_hour')->with([
             'hospitals' => $hospitals,
