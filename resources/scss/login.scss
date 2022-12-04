@@ -44,7 +44,6 @@
     }
 
     &__btn {
-        margin-top: 20px;
         text-align: center;
 
         & .btn {
@@ -64,5 +63,38 @@
 
     &__error {
         text-align: center;
+    }
+
+    &__sso {
+
+        &-item {
+            padding-left: 120px;
+            padding-right: 120px;
+            display: flex;
+            justify-content: space-around;
+
+            & a {
+                padding: 6px 12px;
+                text-decoration: none;
+                border: 1px solid black;
+                border-radius: 3px;
+                color:inherit;
+            }
+
+            &-google {
+                flex-basis: 30%;
+                color: green;
+            }
+
+            &-twitter {
+                flex-basis: 30%;
+                color: blue;
+            }
+
+            &-github {
+                flex-basis: 30%;
+                color: gray;
+            }
+        }
     }
 }

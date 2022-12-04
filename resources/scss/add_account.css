@@ -1,4 +1,4 @@
-.content-width, .container {
+.content-width, .page-title, .account {
   width: 90%;
   margin: 0 auto;
 }
@@ -13,7 +13,7 @@
   padding: 4px 8px;
 }
 
-.font-title {
+.font-title, .page-title {
   font-size: 16px;
   font-weight: bold;
 }
@@ -97,81 +97,49 @@
   text-align: center;
 }
 
-.global-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(242, 242, 246, 0.941);
+.local-container {
+  background: rgb(241, 241, 241);
+  width: 100%;
 }
 
 .page-title {
-  text-align: center;
-  margin-top: 100px;
+  text-align: left;
 }
 
-.login {
-  margin-top: 40px;
-}
-.login__item {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-.login__label {
-  display: flex;
-  flex-basis: 10%;
-  align-items: center;
-  justify-content: center;
-}
-.login__input {
-  flex-basis: 30%;
-  height: 20px;
-}
-.login__input:focus {
-  outline: none;
-}
-.login__btn {
-  text-align: center;
-}
-.login__btn .btn {
-  padding: 4px 32px;
+.account {
   background: white;
-  color: rgb(33, 110, 252);
-  border: 1px solid rgb(33, 110, 252);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s;
 }
-.login__btn .btn:hover {
-  transform: scale(1.1, 1.1);
-}
-.login__error {
-  text-align: center;
-}
-.login__sso-item {
-  padding-left: 120px;
-  padding-right: 120px;
+.account__form {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
 }
-.login__sso-item a {
-  padding: 6px 12px;
-  text-decoration: none;
+.account__form-item {
+  display: flex;
+  margin-top: 25px;
+}
+.account__form-label {
+  display: inline-flex;
+  margin-left: 10px;
+  flex-basis: 30%;
+  justify-content: flex-end;
+  align-items: center;
+}
+.account__form-input {
+  justify-content: flex-end;
+  margin-left: 15px;
+  flex-basis: 50%;
   border: 1px solid black;
   border-radius: 3px;
-  color: inherit;
+  padding: 4px 6px;
 }
-.login__sso-item-google {
-  flex-basis: 30%;
-  color: green;
-}
-.login__sso-item-twitter {
-  flex-basis: 30%;
-  color: blue;
-}
-.login__sso-item-github {
-  flex-basis: 30%;
-  color: gray;
-}
+.account__form-select {
+  -webkit-appearance: menulist;
+     -moz-appearance: menulist;
+          appearance: menulist;
+  justify-content: flex-end;
+  margin-left: 15px;
+  flex-basis: 50%;
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 4px 6px;
+}/*# sourceMappingURL=add_account.css.map */

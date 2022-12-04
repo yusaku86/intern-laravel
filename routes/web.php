@@ -15,8 +15,15 @@ use Illuminate\Support\Facades\Route;
 // ログイン画面
 Route::get('/login', [\App\Http\Controllers\AdminUserController::class, 'indexLoginPage'])->name('login');
 
-// ログイン認証
+// 通常ログイン認証(メールアドレスとパスワード)
 Route::post('/login', [\App\Http\Controllers\AdminUserController::class, 'login'])->name('login.execute');
+
+// SSOログイン画面
+Route::get('/login/{resourceServer}', [\App\Http\Controllers\SingleSignOnController::class,'showSsoLoginPage'])->name('login.sso');
+
+// Googleログイン認証
+Route::get('/auth/{resourceServer}/callback',[\App\Http\Controllers\SingleSignOnController::class,'executeSso'])->name('login.sso.execute');
+
 
 // 以下ログイン済みのユーザーのみアクセス可能
 Route::middleware('auth')->group(function () {

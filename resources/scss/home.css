@@ -1,4 +1,4 @@
-.content-width, .container {
+.content-width {
   width: 90%;
   margin: 0 auto;
 }
@@ -97,81 +97,57 @@
   text-align: center;
 }
 
-.global-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(242, 242, 246, 0.941);
+.local-container {
+  flex-basis: 80%;
 }
 
-.page-title {
-  text-align: center;
-  margin-top: 100px;
-}
-
-.login {
-  margin-top: 40px;
-}
-.login__item {
+.header {
   display: flex;
   justify-content: center;
-  margin-top: 15px;
 }
-.login__label {
+.header__title {
   display: flex;
+  justify-content: flex-start;
   flex-basis: 10%;
-  align-items: center;
-  justify-content: center;
 }
-.login__input {
-  flex-basis: 30%;
-  height: 20px;
-}
-.login__input:focus {
-  outline: none;
-}
-.login__btn {
-  text-align: center;
-}
-.login__btn .btn {
-  padding: 4px 32px;
-  background: white;
-  color: rgb(33, 110, 252);
-  border: 1px solid rgb(33, 110, 252);
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-.login__btn .btn:hover {
-  transform: scale(1.1, 1.1);
-}
-.login__error {
-  text-align: center;
-}
-.login__sso-item {
-  padding-left: 120px;
-  padding-right: 120px;
+.header__user {
   display: flex;
-  justify-content: space-around;
+  flex-basis: 60%;
+  justify-content: flex-end;
 }
-.login__sso-item a {
-  padding: 6px 12px;
-  text-decoration: none;
-  border: 1px solid black;
+.header__user-id {
+  text-align: center;
+  padding: 0 4px;
+  background: rgba(228, 226, 226, 0.966);
+}
+.header__btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 10px;
+  flex-basis: 10%;
+}
+.header__btn .btn {
+  background: rgb(2, 1, 113);
+  padding: 1px 4px;
+  color: white;
+  border-radius: 10px;
+}
+
+.home {
+  display: flex;
+  width: 100%;
+  margin-top: 60px;
+  flex-wrap: wrap;
+}
+.home__item {
+  display: flex;
+  flex-basis: 22%;
+  margin-left: 20px;
+  margin-bottom: 25px;
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid rgba(40, 144, 218, 0.749);
+  color: rgba(40, 144, 218, 0.749);
   border-radius: 3px;
-  color: inherit;
-}
-.login__sso-item-google {
-  flex-basis: 30%;
-  color: green;
-}
-.login__sso-item-twitter {
-  flex-basis: 30%;
-  color: blue;
-}
-.login__sso-item-github {
-  flex-basis: 30%;
-  color: gray;
-}
+}/*# sourceMappingURL=home.css.map */

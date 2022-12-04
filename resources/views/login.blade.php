@@ -37,8 +37,25 @@
                         <p class="login__error error-message">入力を行って下さい。</p>
                     @endif
 
-                    <div class="login__btn">
+                    <div class="login__btn mt-lg">
                         <button type="submit" class="btn">ログイン</button>
+                    </div>
+
+                    <div class="login__sso mt-lg text-center">
+                        <div class="login__sso-title">
+                            <p>外部認証でログイン(登録)</p>
+                        </div>
+                        <div class="login__sso-item mt-lg">
+                            <div class="login__sso-item-google">
+                                <a href="{{ route('login.sso', 'google') }}">Googleでログイン(登録)</a>
+                            </div>
+                            <div class="login__sso-item-twitter">
+                                <a href="{{ route('login.sso', 'twitter') }}">Twitterでログイン(登録)</a>
+                            </div>
+                            <div class="login__sso-item-github">
+                                <a href="{{ route('login.sso', 'github') }}">GitHubでログイン(登録)</a>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>

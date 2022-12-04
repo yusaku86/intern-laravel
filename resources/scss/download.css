@@ -1,4 +1,4 @@
-.content-width, .container {
+.content-width, .local-container, .page-title, .download {
   width: 90%;
   margin: 0 auto;
 }
@@ -97,81 +97,39 @@
   text-align: center;
 }
 
-.global-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(242, 242, 246, 0.941);
+.local-container {
+  background: rgb(241, 241, 241);
 }
 
 .page-title {
-  text-align: center;
-  margin-top: 100px;
+  font-size: 20px;
 }
 
-.login {
-  margin-top: 40px;
-}
-.login__item {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-.login__label {
-  display: flex;
-  flex-basis: 10%;
-  align-items: center;
-  justify-content: center;
-}
-.login__input {
-  flex-basis: 30%;
-  height: 20px;
-}
-.login__input:focus {
-  outline: none;
-}
-.login__btn {
-  text-align: center;
-}
-.login__btn .btn {
-  padding: 4px 32px;
+.download {
   background: white;
-  color: rgb(33, 110, 252);
-  border: 1px solid rgb(33, 110, 252);
+  padding: 10px 15px;
+}
+.download__title {
+  font-size: 18px;
+}
+.download__item {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  font-size: 15px;
+}
+.download__item-hospital {
+  flex-basis: 30%;
+  display: flex;
+  -webkit-appearance: menulist;
+     -moz-appearance: menulist;
+          appearance: menulist;
+  text-align: center;
+  align-items: center;
+  border: solid 1px black;
   border-radius: 5px;
   cursor: pointer;
-  transition: transform 0.2s;
 }
-.login__btn .btn:hover {
-  transform: scale(1.1, 1.1);
-}
-.login__error {
-  text-align: center;
-}
-.login__sso-item {
-  padding-left: 120px;
-  padding-right: 120px;
-  display: flex;
-  justify-content: space-around;
-}
-.login__sso-item a {
-  padding: 6px 12px;
-  text-decoration: none;
-  border: 1px solid black;
-  border-radius: 3px;
-  color: inherit;
-}
-.login__sso-item-google {
-  flex-basis: 30%;
-  color: green;
-}
-.login__sso-item-twitter {
-  flex-basis: 30%;
-  color: blue;
-}
-.login__sso-item-github {
-  flex-basis: 30%;
-  color: gray;
-}
+.download__item-btn {
+  margin-left: 15px;
+}/*# sourceMappingURL=download.css.map */

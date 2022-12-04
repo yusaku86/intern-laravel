@@ -133,6 +133,7 @@
   outline: none;
 }
 .login__btn {
+  margin-top: 20px;
   text-align: center;
 }
 .login__btn .btn {
@@ -149,29 +150,4 @@
 }
 .login__error {
   text-align: center;
-}
-.login__sso-item {
-  padding-left: 120px;
-  padding-right: 120px;
-  display: flex;
-  justify-content: space-around;
-}
-.login__sso-item a {
-  padding: 6px 12px;
-  text-decoration: none;
-  border: 1px solid black;
-  border-radius: 3px;
-  color: inherit;
-}
-.login__sso-item-google {
-  flex-basis: 30%;
-  color: green;
-}
-.login__sso-item-twitter {
-  flex-basis: 30%;
-  color: blue;
-}
-.login__sso-item-github {
-  flex-basis: 30%;
-  color: gray;
-}
+}/*# sourceMappingURL=login.css.map */
